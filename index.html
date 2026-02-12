@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Krisna Exam System - FINAL EXAM PG01</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+:root {
+  --bg: #f0f2f5;
+  --card: #ffffff;
+  --text: #2d3436;
+  --muted: #636e72;
+  --teal: #008080;
+  --teal-light: #e0f2f2;
+  --correct: #27ae60;
+  --wrong: #d63031;
+  --border: #dfe6e9;
+  --admin-color: #6c5ce7;
+  --info-bg: #e1f5fe;
+}
+
+* { box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+body { margin: 0; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+header { background: var(--card); border-bottom: 3px solid var(--teal); box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 10px 20px; position: sticky; top: 0; z-index: 1000; }
+.header-inner { max-width: 1200px; margin: auto; display: flex; justify-content: space-between; align-items: center; }
+h1 { margin: 0; color: var(--teal); font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; }
+
+.container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
+.card { background: var(--card); border-radius: 8px; padding: 25px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+
+.exam-grid { display: grid; grid-template-columns: 260px 1fr 260px; gap: 20px; align-items: start; }
+.sidebar-left, .sidebar-right { position: sticky; top: 80px; background: var(--card); padding: 20px; border-radius: 8px; border: 1px solid var(--border); }
+.sidebar-left { border-left: 4px solid var(--teal); }
+.sidebar-right { border-right: 4px solid var(--teal); }
+
+.timer-box { font-size: 1.8rem; font-weight: bold; text-align: center; margin: 15px 0; padding: 10px; background: var(--bg); border-radius: 5px; border: 1px solid var(--border); }
+
+.nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 20px; }
+.nav-btn { padding: 8px 0; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; text-align: center; cursor: pointer; font-size: 0.75rem; }
+.nav-btn.answered { background: var(--teal); color: white; border-color: var(--teal); }
+
+.option { display: block; border: 1px solid var(--border); padding: 12px 15px; border-radius: 6px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; position: relative; }
+.option.selected { border-color: var(--teal); background: var(--teal-light); font-weight: 600; }
+.correct-view { background: #d4edda; border-color: #c3e6cb; color: #155724; }
+.wrong-view { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+
+.explanation-box { background: var(--info-bg); padding: 15px; border-radius: 6px; margin-top: 10px; border-left: 4px solid #0288d1; font-size: 0.9rem; }
+
+button { background: var(--teal); color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.3s; }
+button:hover { opacity: 0.9; transform: translateY(-1px); }
+button.secondary { background: var(--muted); }
+button.danger { background: var(--wrong); }
+button.admin-btn { background: var(--admin-color); width: auto; font-size: 0.8rem; padding: 5px 10px; margin-left: 5px; }
+
+input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; font-size: 1rem; }
+.hidden { display: none !important; }
+
+@media (max-width: 900px) {
+    .exam-grid { display: block; }
+    .sidebar-left, .sidebar-right { position: relative; top: 0; width: 100%; margin-bottom: 20px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div style="display:flex; align-items:center; gap:10px;">
+        <i class="fas fa-globe-asia" style="color:var(--teal); font-size:1.5rem;"></i>
+        <h1>Krisna Exam System <small style="font-size:0.6rem; opacity:0.7;">PG01 FINAL</small></h1>
+    </div>
+    <div id="userDisplay" style="font-weight:bold; color:var(--muted);"></div>
+  </div>
+</header>
+
+<div class="container">
+  <div id="startScreen" class="card" style="max-width:400px; margin: 60px auto; text-align:center;">
+    <h2 style="color:var(--teal)">Secure Examination Access</h2>
+    <p style="font-size:0.8rem; color:var(--muted);">Module: PG01 GEODESY</p>
+    <input type="text" id="candidateName" placeholder="Username">
+    <input type="password" id="candidatePass" placeholder="Password">
+    <button onclick="login()">ENTER SYSTEM <i class="fas fa-sign-in-alt"></i></button>
+  </div>
+
+  <div id="menuScreen" class="hidden">
+    <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h3 style="margin:0;">FINAL EXAM PG01 GEODESY</h3>
+            <button class="secondary" style="width:auto;" onclick="location.reload()">Logout</button>
+        </div>
+        <div id="roleBadge" style="display:inline-block; padding:5px 15px; border-radius:20px; font-size:0.8rem; font-weight:bold; margin-bottom:20px;"></div>
+        
+        <button id="mainModuleBtn" onclick="handleModuleClick()" style="background:#e0f2f2; color:var(--teal); border:2px solid var(--teal); padding:30px; font-size:1.1rem; text-align:left;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span><i class="fas fa-graduation-cap"></i> Start Comprehensive Exam (50 MCQs)</span>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </button>
+    </div>
+    
+    <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h3 style="margin:0;">Performance History</h3>
+            <div id="adminTools" class="hidden">
+                <button class="admin-btn" onclick="exportCSV()"><i class="fas fa-download"></i> CSV</button>
+                <button class="admin-btn danger" onclick="clearAllData()"><i class="fas fa-trash-alt"></i> Clear All</button>
+            </div>
+        </div>
+        <div style="overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+                <thead><tr style="background:#f8f9fa;">
+                    <th style="padding:10px; border-bottom:1px solid #ddd; text-align:left;">Candidate</th>
+                    <th style="padding:10px; border-bottom:1px solid #ddd; text-align:left;">Final Score</th>
+                    <th style="padding:10px; border-bottom:1px solid #ddd; text-align:left;">Completion Time</th>
+                    <th id="adminCol" class="hidden" style="padding:10px; border-bottom:1px solid #ddd; text-align:center;">Action</th>
+                </tr></thead>
+                <tbody id="histBody"></tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+
+  <div id="examScreen" class="exam-grid hidden">
+    <aside class="sidebar-left">
+        <h3>Exam Details</h3>
+        <p id="displayUser" style="font-size:0.8rem; color:var(--muted);"></p>
+        <hr>
+        <div class="timer-box" id="timerDisplay">00:00</div>
+        <button onclick="exitExam()" class="secondary">Cancel Exam</button>
+    </aside>
+
+    <section id="qBox"></section>
+
+    <aside class="sidebar-right">
+        <h4>Navigation</h4>
+        <div id="navGrid" class="nav-grid"></div>
+        <button onclick="submitExam()" style="padding:15px; background:var(--correct);">SUBMIT EXAM <i class="fas fa-check-circle"></i></button>
+    </aside>
+  </div>
+
+  <div id="resultScreen" class="hidden card">
+    <div style="text-align:center; padding:20px;">
+        <h2 id="resTitle">Assessment Review</h2>
+        <div id="resScore" style="font-size:4rem; color:var(--teal); font-weight:800;">0%</div>
+        <p id="resInfo" style="color:var(--muted);"></p>
+        <button onclick="location.reload()" style="width:auto; padding:10px 30px;">Back to Dashboard</button>
+    </div>
+    <hr>
+    <h3 style="padding:10px;">Question Review & Explanation</h3>
+    <div id="reviewBox"></div>
+  </div>
+</div>
+
+<script>
+const USERS = {
+    "Sena": { pass: "Sena!32", role: "Student" },
+    "Krisna": { pass: "Krisna!32", role: "Admin" },
+    "Flint": { pass: "Flint!32", role: "Student" }
+};
+
+const BANK = [
+    { q: "According to the PDF, which statement is correct regarding measurement?", o: ["A single measurement is sufficient", "Every measurement is exact", "Every measurement contains errors", "True value is always known"], a: 2, e: "The PDF explicitly states that every measurement contains errors and the true value is never known." },
+    { q: "The true value of a measurement is:", o: ["Always measurable", "Known after averaging", "Never known", "Equal to the mean"], a: 2, e: "The material clearly states the true value is never known." },
+    { q: "Quality of measurement is defined as:", o: ["Accuracy only", "Precision only", "Precision + Reliability", "Mean + Standard deviation"], a: 2, e: "The PDF defines quality as Precision + Reliability." },
+    { q: "Which statistical value indicates dispersion?", o: ["Mean", "Median", "Standard deviation", "Minimum"], a: 2, e: "The comparison example in the PDF uses standard deviation to compare precision." },
+    { q: "For 95% confidence level, the z-value is:", o: ["1.00", "1.64", "1.96", "2.58"], a: 2, e: "The PDF specifies z = 1.96 for 95% confidence." },
+    { q: "Error propagation occurs when:", o: ["Repeating the same measurement", "Using uncertain measurements in calculations", "Ignoring systematic errors", "Using GPS only"], a: 1, e: "Error propagation is defined when uncertain measurements are used to compute derived quantities." },
+    { q: "For multiplication/division, relative uncertainty is combined by:", o: ["Direct summation", "Squared addition", "Square root of squared relative uncertainties", "Subtraction"], a: 2, e: "Formula given in propagation section." },
+    { q: "The least squares method minimizes:", o: ["Absolute errors", "Sum of residuals", "Sum of squared residuals", "Maximum deviation"], a: 2, e: "The PDF states the sum of squares of deviations is minimized." },
+    { q: "The normal equations in least squares are derived from:", o: ["Integration", "Differentiation", "Summation", "Projection"], a: 1, e: "The equations are obtained by differentiating the sum of squared residuals." },
+    { q: "Redundant measurements help to:", o: ["Increase error", "Detect gross errors", "Reduce time", "Remove variance"], a: 1, e: "Redundancy is used to detect outliers and gross errors." },
+    { q: "Lagrange interpolation is used to:", o: ["Estimate unknown values between known points", "Reduce systematic errors", "Convert coordinates", "Transform datums"], a: 0, e: "The PDF presents Lagrange interpolation for estimating intermediate values." },
+    { q: "Inverse Distance Weighting (IDW) assumes:", o: ["Far points are more similar", "Close points are more alike", "All points have equal weight", "Only two points are used"], a: 1, e: "The PDF states closer points have more influence." },
+    { q: "Cross-validation in interpolation is used to:", o: ["Increase grid density", "Check interpolation accuracy", "Change projection", "Reduce variance"], a: 1, e: "Removing one point and predicting its value assesses model quality." },
+    { q: "Quadratic spline interpolation uses:", o: ["First-order polynomial", "Second-order polynomial", "Third-order polynomial", "Constant value"], a: 1, e: "Quadratic spline uses second-order polynomial functions." },
+    { q: "Spline interpolation ensures:", o: ["Discontinuous surface", "Smooth connection at knots", "No slope continuity", "No curvature"], a: 1, e: "Adjacent polynomials must match at interior knots." },
+    { q: "The Earth is approximated mathematically by:", o: ["Cube", "Plane", "Ellipsoid", "Cone"], a: 2, e: "Reference ellipsoid approximates Earth's shape." },
+    { q: "WGS-84 semi-major axis is approximately:", o: ["6,356,752 m", "6,378,137 m", "6,400,000 m", "6,350,000 m"], a: 1, e: "Listed in ellipsoid parameters." },
+    { q: "Geoid represents:", o: ["Mathematical ellipsoid", "Physical gravity surface", "Plane projection", "Satellite orbit"], a: 1, e: "Geoid defined as physical representation of Earth’s shape." },
+    { q: "A Coordinate Reference System (CRS) is:", o: ["Practical realization only", "Theoretical definition including parameters", "Projection formula only", "Benchmark list"], a: 1, e: "CRS includes theory and standards." },
+    { q: "A Coordinate Reference Frame (CRF) is:", o: ["Theoretical system", "Mathematical model", "Practical realization of CRS", "Datum only"], a: 2, e: "CRF is realization via observed coordinates." },
+    { q: "A map projection represents:", o: ["Plane on sphere", "Sphere on plane", "Datum transformation", "Satellite orbit"], a: 1, e: "Defined as representation of curved Earth on plane." },
+    { q: "UTM belongs to:", o: ["Conical projection", "Cylindrical projection", "Azimuthal projection", "Polyhedral projection"], a: 1, e: "UTM is Transverse Mercator (cylindrical)." },
+    { q: "Projection distortion increases:", o: ["Toward equator only", "Away from central reference line", "At datum", "At origin only"], a: 1, e: "Distortion increases away from center point." },
+    { q: "Geographic Coordinate System includes:", o: ["Prime meridian, angular unit, datum", "Easting and Northing only", "Scale factor only", "Grid convergence only"], a: 0, e: "GCS components defined in PDF." },
+    { q: "Planimetric coordinates are:", o: ["(φ, λ)", "(X,Y,Z)", "(E,N)", "(Lat, Lon, h)"], a: 2, e: "Projection formulae produce Easting and Northing." },
+    { q: "4D coordinates include:", o: ["Latitude and Longitude", "Height only", "Latitude, Longitude, Height, Time", "Easting and Northing"], a: 2, e: "4D coordinate defined in PDF." },
+    { q: "Geocentric coordinates are:", o: ["(φ, λ)", "(E,N)", "(X,Y,Z)", "(h only)"], a: 2, e: "Types of coordinates (X,Y,Z) relative to Earth center." },
+    { q: "Topocentric coordinates are:", o: ["Local x,y,z", "Ellipsoidal", "Astronomical", "Geocentric"], a: 0, e: "Local system centered on observer." },
+    { q: "CIS stands for:", o: ["Conventional Inertial System", "Central International System", "Cylindrical Integrated System", "Celestial Integrated System"], a: 0, e: "Conventional Inertial System definition." },
+    { q: "CTS stands for:", o: ["Conventional Terrestrial System", "Cylindrical Terrestrial System", "Central Tracking System", "Coordinate Terrestrial System"], a: 0, e: "Conventional Terrestrial System definition." },
+    { q: "Orthometric height is derived using:", o: ["Ellipsoidal height only", "Geoid only", "Ellipsoidal height and geoid undulation", "Projection formula"], a: 2, e: "GNSS levelling formula: H = h - N." },
+    { q: "TVU formula is:", o: ["a + bd", "√(a² + (bd)²)", "a² + b²", "bd"], a: 1, e: "Total Vertical Uncertainty formula for 95% confidence." },
+    { q: "In IHO S-44, parameters a and b depend on:", o: ["Projection", "Survey order", "Datum", "GNSS type"], a: 1, e: "Table lists different a and b per survey order (Special, Order 1a/1b, Order 2)." },
+    { q: "Vessel motion errors include:", o: ["Yaw only", "Roll, pitch, heave", "Speed only", "Heading only"], a: 1, e: "Listed as vertical error sources affecting transducer depth." },
+    { q: "Sound speed errors affect:", o: ["Horizontal position", "Bathymetric depth", "Datum transformation", "Projection"], a: 1, e: "Sound speed error listed under vertical uncertainty." },
+    { q: "INS uses:", o: ["Satellites only", "Accelerometers and gyros", "Radar only", "Echo sounder"], a: 1, e: "Strapdown INS components use IMU (Accel + Gyro)." },
+    { q: "GNSS aiding improves INS by:", o: ["Replacing accelerometers", "Providing independent position", "Eliminating drift", "Removing gyros"], a: 1, e: "GNSS provides position and velocity aiding to correct INS drift." },
+    { q: "Kalman filter is used to:", o: ["Convert projection", "Blend GNSS and INS", "Compute geoid", "Detect tide"], a: 1, e: "Kalman filter blends INS outputs and GNSS measurements optimally." },
+    { q: "Strapdown INS means:", o: ["Rotating platform", "Sensors fixed to body frame", "Satellite-based", "Optical system"], a: 1, e: "Strapdown system fixes sensors directly to vehicle bodi." },
+    { q: "INS errors grow due to:", o: ["Datum shift", "Sensor and initial condition errors", "Projection distortion", "Tidal correction"], a: 1, e: "Small sensor biases are integrated, causing error growth." },
+    { q: "Plane surveying ignores:", o: ["Projection", "Earth curvature", "Datum", "Coordinates"], a: 1, e: "Plane surveying assumes a flat Earth surface." },
+    { q: "Geodetic surveying considers:", o: ["Flat Earth", "Small areas only", "Earth curvature", "No adjustment"], a: 2, e: "Geodetic surveying accounts for Earth's curvature." },
+    { q: "Plane surveying area coverage is:", o: [">250 km²", "<250 km²", "Global", "Polar only"], a: 1, e: "Usually limited to areas less than 250 km²." },
+    { q: "Astronomical surveying determines position using:", o: ["Satellites", "Sea depth", "Celestial objects", "Radar"], a: 2, e: "Using stars and other celestial bodies." },
+    { q: "Marine/hydrographic surveying includes:", o: ["Road measurement", "Seafloor measurement", "Airborne lidar only", "Plane triangulation"], a: 1, e: "Involves measuring water depths and seabed topography." },
+    { q: "Geodetic transformation may use:", o: ["Geocentric translation", "Interpolation only", "INS only", "Projection formula"], a: 0, e: "EPSG method often uses geocentric translation (X,Y,Z shifts)." },
+    { q: "Ellipsoid parameters include:", o: ["Prime meridian only", "Semi-major axis and flattening", "Zone number", "Scale factor only"], a: 1, e: "Ellipsoid defined by semi-major axis (a) and flattening (f)." },
+    { q: "ITRF epochs indicate:", o: ["Projection type", "Time dependency of coordinates", "Datum height", "Tidal range"], a: 1, e: "Coordinates change over time due to tectonic plate motion." },
+    { q: "Reference ellipsoid is used because:", o: ["Earth is flat", "It simplifies calculations", "It equals geoid", "It removes gravity"], a: 1, e: "Ellipsoid is mathematically simpler than the complex Geoid." },
+    { q: "Height systems require:", o: ["Projection only", "Ellipsoid only", "Geoid model and benchmarks", "INS only"], a: 2, e: "Requires vertical datum control via geoid and BMs." }
+];
+
+let currentUser = "";
+let currentRole = "";
+let userAns = {};
+let isAdmin = false;
+let timerInterval;
+let startTime;
+
+function login() {
+    let name = document.getElementById('candidateName').value.trim();
+    let pass = document.getElementById('candidatePass').value.trim();
+    if(USERS[name] && USERS[name].pass === pass) {
+        currentUser = name;
+        currentRole = USERS[name].role;
+        isAdmin = (currentRole === "Admin");
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('menuScreen').classList.remove('hidden');
+        const badge = document.getElementById('roleBadge');
+        badge.innerText = currentRole.toUpperCase();
+        badge.style.background = isAdmin ? "var(--admin-color)" : "var(--teal)";
+        badge.style.color = "white";
+        document.getElementById('userDisplay').innerHTML = `Candidate: <strong>${currentUser}</strong>`;
+        if(isAdmin) {
+            document.getElementById('adminTools').classList.remove('hidden');
+            document.getElementById('adminCol').classList.remove('hidden');
+        }
+        refreshHistory();
+    } else {
+        alert("Access Denied. Contact Admin.");
+    }
+}
+
+function handleModuleClick() {
+    if(isAdmin) {
+        if(confirm("Admin Mode: View MASTER KEY?")) showMasterKey();
+        else startExam();
+    } else startExam();
+}
+
+function startExam() {
+    userAns = {};
+    document.getElementById('menuScreen').classList.add('hidden');
+    document.getElementById('examScreen').classList.remove('hidden');
+    renderQuestions();
+    renderNav();
+    startTime = Date.now();
+    timerInterval = setInterval(() => {
+        let diff = Math.floor((Date.now() - startTime) / 1000);
+        let m = Math.floor(diff/60).toString().padStart(2,'0');
+        let s = (diff%60).toString().padStart(2,'0');
+        document.getElementById('timerDisplay').innerText = `${m}:${s}`;
+    }, 1000);
+}
+
+function renderQuestions() {
+    const box = document.getElementById('qBox');
+    box.innerHTML = BANK.map((q, i) => {
+        const lbl = ['A', 'B', 'C', 'D'];
+        let input = q.o.map((text, oi) => `
+            <div class="option ${userAns[i] === oi ? 'selected' : ''}" onclick="saveAns(${i}, ${oi})">
+                <strong>${lbl[oi]}.</strong> ${text}
+            </div>
+        `).join('');
+        return `<div class="card" id="q_${i}">
+            <p><strong>Question ${i+1}</strong></p>
+            <p>${q.q}</p>${input}</div>`;
+    }).join('');
+}
+
+function saveAns(idx, val) {
+    userAns[idx] = val;
+    renderNav();
+    renderQuestions();
+}
+
+function renderNav() {
+    document.getElementById('navGrid').innerHTML = BANK.map((_, i) => `
+        <div class="nav-btn ${userAns.hasOwnProperty(i) ? 'answered' : ''}" 
+             onclick="document.getElementById('q_${i}').scrollIntoView({behavior:'smooth', block:'center'})">${i+1}</div>
+    `).join('');
+}
+
+function submitExam() {
+    if(!confirm("Submit final results?")) return;
+    clearInterval(timerInterval);
+    let score = 0;
+    BANK.forEach((q, i) => { if(userAns[i] === q.a) score++; });
+    const pct = Math.round(score/BANK.length*100);
+    saveRecord(pct);
+    showResult(pct, `Exam Completed. Final Score: ${score}/${BANK.length}`);
+}
+
+function showResult(pct, info) {
+    document.getElementById('examScreen').classList.add('hidden');
+    document.getElementById('resultScreen').classList.remove('hidden');
+    document.getElementById('resScore').innerText = (pct === "KEY" ? "KEY" : pct + "%");
+    document.getElementById('resInfo').innerText = info;
+    const lbl = ['A', 'B', 'C', 'D'];
+    document.getElementById('reviewBox').innerHTML = BANK.map((q, i) => {
+        let optionsHtml = q.o.map((text, oi) => {
+            let cls = (oi === q.a) ? 'correct-view' : (userAns[i] === oi ? 'wrong-view' : '');
+            return `<div class="option ${cls}"><strong>${lbl[oi]}.</strong> ${text} ${oi === q.a ? '✓' : ''}</div>`;
+        }).join('');
+        return `
+            <div class="card">
+                <p><strong>${i+1}. ${q.q}</strong></p>
+                ${optionsHtml}
+                <div class="explanation-box">
+                    <strong><i class="fas fa-info-circle"></i> Explanation:</strong><br>${q.e}
+                </div>
+            </div>`;
+    }).join('');
+}
+
+function showMasterKey() {
+    userAns = {};
+    showResult("KEY", "Displaying Official Answer Key for Final PG01");
+}
+
+function saveRecord(s) {
+    let data = JSON.parse(localStorage.getItem('krisna_final_pg01_db') || '[]');
+    data.push({n: currentUser, s: s, d: new Date().toLocaleString()});
+    localStorage.setItem('krisna_final_pg01_db', JSON.stringify(data));
+}
+
+function refreshHistory() {
+    let data = JSON.parse(localStorage.getItem('krisna_final_pg01_db') || '[]');
+    document.getElementById('histBody').innerHTML = data.map((h, i) => ({...h, idx: i})).reverse().map(h => `
+        <tr>
+            <td style="padding:10px; border-bottom:1px solid #eee;">${h.n}</td>
+            <td style="padding:10px; border-bottom:1px solid #eee;"><strong>${h.s}%</strong></td>
+            <td style="padding:10px; border-bottom:1px solid #eee;"><small>${h.d}</small></td>
+            <td class="${isAdmin?'':'hidden'}" style="text-align:center; border-bottom:1px solid #eee;">
+                <button onclick="deleteSingle(${h.idx})" style="background:none; color:red; width:auto; padding:0;"><i class="fas fa-trash"></i></button>
+            </td>
+        </tr>
+    `).join('') || '<tr><td colspan="4" style="text-align:center; padding:20px; color:#999;">No history available.</td></tr>';
+}
+
+function deleteSingle(i) {
+    let data = JSON.parse(localStorage.getItem('krisna_final_pg01_db') || '[]');
+    data.splice(i, 1);
+    localStorage.setItem('krisna_final_pg01_db', JSON.stringify(data));
+    refreshHistory();
+}
+
+function clearAllData() {
+    if(confirm("Confirm: Wipe all records?")) {
+        localStorage.removeItem('krisna_final_pg01_db');
+        refreshHistory();
+    }
+}
+
+function exportCSV() {
+    let data = JSON.parse(localStorage.getItem('krisna_final_pg01_db') || '[]');
+    let csv = "Candidate,Score,Date\n" + data.map(h => `"${h.n}",${h.s},"${h.d}"`).join('\n');
+    let a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+    a.download = 'PG01_Final_Results.csv';
+    a.click();
+}
+
+function exitExam() {
+    if(confirm("Cancel current exam session?")) location.reload();
+}
+</script>
+</body>
+</html>
