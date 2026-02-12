@@ -20,6 +20,7 @@
   --admin-color: #6c5ce7;
   --info-bg: #e1f5fe;
   --essay-bg: #fff3e0;
+  --warning: #f39c12;
 }
 
 * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
@@ -30,7 +31,8 @@ header { background: var(--card); border-bottom: 3px solid var(--teal); box-shad
 h1 { margin: 0; color: var(--teal); font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; }
 
 .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
-.card { background: var(--card); border-radius: 8px; padding: 25px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+.card { background: var(--card); border-radius: 8px; padding: 25px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid var(--border); transition: transform 0.2s, box-shadow 0.2s; }
+.card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 
 /* Badges */
 .badge-essay { background: #f39c12; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; margin-left: 5px; }
@@ -41,13 +43,16 @@ h1 { margin: 0; color: var(--teal); font-size: 1.2rem; text-transform: uppercase
 .sidebar-left { border-left: 4px solid var(--teal); }
 .sidebar-right { border-right: 4px solid var(--teal); }
 
-.timer-box { font-size: 1.8rem; font-weight: bold; text-align: center; margin: 15px 0; padding: 10px; background: var(--bg); border-radius: 5px; border: 1px solid var(--border); }
+.timer-box { font-size: 1.8rem; font-weight: bold; text-align: center; margin: 15px 0; padding: 10px; background: var(--bg); border-radius: 5px; border: 1px solid var(--border); font-family: 'Courier New', monospace; }
 
 .nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 20px; max-height: 400px; overflow-y: auto; padding: 5px; }
-.nav-btn { padding: 8px 0; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; text-align: center; cursor: pointer; font-size: 0.75rem; }
+.nav-btn { padding: 8px 0; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; text-align: center; cursor: pointer; font-size: 0.75rem; transition: all 0.2s; }
+.nav-btn:hover { background: var(--teal-light); transform: scale(1.05); }
 .nav-btn.answered { background: var(--teal); color: white; border-color: var(--teal); }
+.nav-btn.current { border: 2px solid var(--warning); box-shadow: 0 0 8px rgba(243, 156, 18, 0.5); }
 
 .option { display: block; border: 1px solid var(--border); padding: 12px 15px; border-radius: 6px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; position: relative; }
+.option:hover { border-color: var(--teal); background: #f8fffe; }
 .option.selected { border-color: var(--teal); background: var(--teal-light); font-weight: 600; }
 .correct-view { background: #d4edda !important; border-color: #c3e6cb !important; color: #155724; }
 .wrong-view { background: #f8d7da !important; border-color: #f5c6cb !important; color: #721c24; }
@@ -57,21 +62,88 @@ h1 { margin: 0; color: var(--teal); font-size: 1.2rem; text-transform: uppercase
 .user-essay-box { background: var(--essay-bg); padding: 15px; border-radius: 6px; margin-top: 10px; border: 1px dashed #f39c12; font-style: italic; }
 
 button { background: var(--teal); color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.3s; }
-button:hover { opacity: 0.9; transform: translateY(-1px); }
+button:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+button:active { transform: translateY(0); }
 button.secondary { background: var(--muted); }
 button.danger { background: var(--wrong); }
 button.admin-btn { background: var(--admin-color); width: auto; font-size: 0.8rem; padding: 5px 10px; margin-left: 5px; }
 
-textarea { width: 100%; height: 120px; padding: 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 1rem; resize: vertical; margin-top: 10px; }
+textarea { width: 100%; height: 120px; padding: 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 1rem; resize: vertical; margin-top: 10px; font-family: inherit; }
 textarea:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 5px rgba(0,128,128,0.2); }
 
-input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; font-size: 1rem; }
+.char-counter { text-align: right; font-size: 0.75rem; color: var(--muted); margin-top: 5px; }
+.char-counter.warning { color: var(--warning); }
+
+input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; font-size: 1rem; transition: border 0.2s; }
+input:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 5px rgba(0,128,128,0.2); }
+
 .hidden { display: none !important; }
+
+/* Progress Bar */
+.progress-container { width: 100%; background: var(--border); border-radius: 10px; height: 8px; margin: 15px 0; overflow: hidden; }
+.progress-bar { height: 100%; background: linear-gradient(90deg, var(--teal), #00a8a8); transition: width 0.3s ease; border-radius: 10px; }
+
+/* Statistics Panel */
+.stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
+.stat-box { background: var(--bg); padding: 10px; border-radius: 5px; text-align: center; border: 1px solid var(--border); }
+.stat-box .stat-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; }
+.stat-box .stat-value { font-size: 1.3rem; font-weight: bold; color: var(--teal); }
+
+/* Keyboard Shortcuts Info */
+.shortcut-hint { background: #fff9e6; border: 1px solid #ffe58f; border-radius: 5px; padding: 10px; margin-top: 15px; font-size: 0.75rem; }
+.shortcut-hint kbd { background: white; border: 1px solid #ccc; border-radius: 3px; padding: 2px 6px; font-family: monospace; }
+
+/* Auto-save Indicator */
+.autosave-indicator { position: fixed; bottom: 20px; right: 20px; background: white; padding: 10px 20px; border-radius: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 0.85rem; display: none; align-items: center; gap: 8px; z-index: 1000; }
+.autosave-indicator.show { display: flex; animation: slideIn 0.3s ease; }
+@keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+/* Filter and Search */
+.filter-bar { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+.filter-btn { padding: 8px 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 20px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; width: auto; }
+.filter-btn:hover { background: var(--teal-light); }
+.filter-btn.active { background: var(--teal); color: white; }
+
+.search-box { flex: 1; min-width: 200px; }
+
+/* Enhanced Table */
+table { border-collapse: collapse; width: 100%; }
+tbody tr { transition: background 0.2s; }
+tbody tr:hover { background: var(--teal-light); }
+
+/* Loading Spinner */
+.spinner { border: 3px solid var(--border); border-top: 3px solid var(--teal); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* Tooltip */
+.tooltip { position: relative; display: inline-block; }
+.tooltip .tooltiptext { visibility: hidden; width: 200px; background-color: #555; color: #fff; text-align: center; border-radius: 6px; padding: 8px; position: absolute; z-index: 1; bottom: 125%; left: 50%; margin-left: -100px; opacity: 0; transition: opacity 0.3s; font-size: 0.75rem; }
+.tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
+
+/* Print Styles */
+@media print {
+    header, .sidebar-left, .sidebar-right, button { display: none; }
+    .exam-grid { display: block; }
+    .card { page-break-inside: avoid; }
+}
 
 @media (max-width: 900px) {
     .exam-grid { display: block; }
     .sidebar-left, .sidebar-right { position: relative; top: 0; width: 100%; margin-bottom: 20px; }
+    .stats-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 1rem; }
 }
+
+/* Dark Mode Toggle */
+body.dark-mode {
+    --bg: #1a1a1a;
+    --card: #2d2d2d;
+    --text: #e0e0e0;
+    --border: #444;
+    --bg-alt: #242424;
+}
+
+.theme-toggle { background: none; width: auto; padding: 8px; font-size: 1.2rem; margin-left: 10px; }
 </style>
 </head>
 <body>
@@ -80,35 +152,73 @@ input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc;
   <div class="header-inner">
     <div style="display:flex; align-items:center; gap:10px;">
         <i class="fas fa-globe-asia" style="color:var(--teal); font-size:1.5rem;"></i>
-        <h1>Krisna Exam System <small style="font-size:0.6rem; opacity:0.7;">PG01 COMPREHENSIVE</small></h1>
+        <h1>Krisna Exam System <small style="font-size:0.6rem; opacity:0.7;">PG01 GEODESY</small></h1>
     </div>
-    <div id="userDisplay" style="font-weight:bold; color:var(--muted);"></div>
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <div id="userDisplay" style="font-weight:bold; color:var(--muted);"></div>
+        <button class="theme-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
   </div>
 </header>
 
 <div class="container">
+  <!-- Start Screen -->
   <div id="startScreen" class="card" style="max-width:400px; margin: 60px auto; text-align:center;">
     <h2 style="color:var(--teal)">Secure Access</h2>
     <p style="font-size:0.8rem; color:var(--muted);">PG01 GEODESY FINAL</p>
-    <input type="text" id="candidateName" placeholder="Username">
-    <input type="password" id="candidatePass" placeholder="Password">
+    <input type="text" id="candidateName" placeholder="Username" autocomplete="username">
+    <input type="password" id="candidatePass" placeholder="Password" autocomplete="current-password" onkeypress="if(event.key==='Enter') login()">
     <button onclick="login()">ENTER SYSTEM <i class="fas fa-sign-in-alt"></i></button>
+    <div style="margin-top: 20px; padding: 15px; background: var(--info-bg); border-radius: 5px; font-size: 0.8rem; text-align: left;">
+        <strong><i class="fas fa-info-circle"></i> Test Credentials:</strong><br>
+        Student: Sena / *********<br>
+        Admin: Krisna / *********
+    </div>
   </div>
 
+  <!-- Menu Screen -->
   <div id="menuScreen" class="hidden">
     <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
             <h3 style="margin:0;">EXAMINATION DASHBOARD</h3>
-            <button class="secondary" style="width:auto;" onclick="location.reload()">Logout</button>
+            <button class="secondary" style="width:auto;" onclick="logout()">Logout <i class="fas fa-sign-out-alt"></i></button>
         </div>
         <div id="roleBadge" style="display:inline-block; padding:5px 15px; border-radius:20px; font-size:0.8rem; font-weight:bold; margin-bottom:20px;"></div>
         
         <button id="mainModuleBtn" onclick="handleModuleClick()" style="background:#e0f2f2; color:var(--teal); border:2px solid var(--teal); padding:30px; font-size:1.1rem; text-align:left;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span><i class="fas fa-graduation-cap"></i> Start Final Exam (50 MCQ + 25 Essay)</span>
+                <div>
+                    <i class="fas fa-graduation-cap"></i> Start Final Exam (50 MCQ + 25 Essay)
+                    <div style="font-size: 0.7rem; opacity: 0.7; margin-top: 5px;">Duration: No time limit | Total: 75 questions</div>
+                </div>
                 <i class="fas fa-chevron-right"></i>
             </div>
         </button>
+
+        <!-- Statistics Overview -->
+        <div style="margin-top: 20px;">
+            <h4>Your Performance Summary</h4>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">Attempts</div>
+                    <div class="stat-value" id="userAttempts">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Best Score</div>
+                    <div class="stat-value" id="userBestScore">-</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Average</div>
+                    <div class="stat-value" id="userAvgScore">-</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Last Attempt</div>
+                    <div class="stat-value" id="userLastDate" style="font-size: 0.8rem;">-</div>
+                </div>
+            </div>
+        </div>
     </div>
     
     <div class="card">
@@ -116,9 +226,19 @@ input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc;
             <h3 style="margin:0;">Performance History</h3>
             <div id="adminTools" class="hidden">
                 <button class="admin-btn" onclick="exportCSV()"><i class="fas fa-download"></i> CSV</button>
+                <button class="admin-btn" onclick="exportJSON()"><i class="fas fa-file-code"></i> JSON</button>
                 <button class="admin-btn danger" onclick="clearAllData()"><i class="fas fa-trash-alt"></i> Clear All</button>
             </div>
         </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <input type="text" id="searchHistory" class="search-box" placeholder="🔍 Search by name..." oninput="filterHistory()">
+            <button class="filter-btn active" onclick="sortHistory('date')">Sort by Date</button>
+            <button class="filter-btn" onclick="sortHistory('score')">Sort by Score</button>
+            <button class="filter-btn" onclick="sortHistory('name')">Sort by Name</button>
+        </div>
+
         <div style="overflow-x:auto;">
             <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
                 <thead><tr style="background:#f8f9fa;">
@@ -133,34 +253,102 @@ input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc;
     </div>
   </div>
 
+  <!-- Exam Screen -->
   <div id="examScreen" class="exam-grid hidden">
     <aside class="sidebar-left">
         <h3>Details</h3>
         <p id="displayUser" style="font-size:0.8rem; color:var(--muted);"></p>
         <div class="timer-box" id="timerDisplay">00:00</div>
-        <button onclick="exitExam()" class="secondary">Cancel</button>
+        
+        <!-- Progress Section -->
+        <div style="margin: 15px 0;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted); margin-bottom: 5px;">
+                <span>Progress</span>
+                <span id="progressText">0/75</span>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-label">MCQ</div>
+                <div class="stat-value" id="mcqCount">0/50</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Essay</div>
+                <div class="stat-value" id="essayCount">0/25</div>
+            </div>
+        </div>
+
+        <!-- Keyboard Shortcuts -->
+        <div class="shortcut-hint">
+            <strong>💡 Shortcuts:</strong><br>
+            <kbd>Ctrl</kbd>+<kbd>S</kbd> Save Draft<br>
+            <kbd>Ctrl</kbd>+<kbd>Enter</kbd> Submit
+        </div>
+
+        <button onclick="saveDraft()" class="secondary" style="margin-top: 10px;">
+            <i class="fas fa-save"></i> Save Draft
+        </button>
+        <button onclick="exitExam()" class="secondary" style="margin-top: 10px;">
+            <i class="fas fa-times"></i> Cancel
+        </button>
     </aside>
 
     <section id="qBox"></section>
 
     <aside class="sidebar-right">
         <h4>Navigation</h4>
+        <div style="font-size: 0.7rem; color: var(--muted); margin-bottom: 10px;">
+            <span style="background: var(--teal); color: white; padding: 2px 6px; border-radius: 3px; margin-right: 5px;">■</span> Answered
+            <span style="background: var(--bg); padding: 2px 6px; border-radius: 3px; margin-left: 10px; border: 1px solid var(--border);">■</span> Unanswered
+        </div>
         <div id="navGrid" class="nav-grid"></div>
-        <button onclick="submitExam()" style="padding:15px; background:var(--correct);">SUBMIT ALL <i class="fas fa-check-circle"></i></button>
+        <button onclick="submitExam()" style="padding:15px; background:var(--correct);">
+            <i class="fas fa-check-circle"></i> SUBMIT ALL
+        </button>
     </aside>
   </div>
 
+  <!-- Result Screen -->
   <div id="resultScreen" class="hidden card">
     <div style="text-align:center; padding:20px;">
         <h2>Assessment Summary</h2>
         <div id="resScore" style="font-size:4rem; color:var(--teal); font-weight:800;">0%</div>
         <p id="resInfo" style="color:var(--muted);"></p>
-        <button onclick="location.reload()" style="width:auto; padding:10px 30px;">Finish Review</button>
+        <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+            <button onclick="printResult()" style="width:auto; padding:10px 30px; background: var(--muted);">
+                <i class="fas fa-print"></i> Print
+            </button>
+            <button onclick="location.reload()" style="width:auto; padding:10px 30px;">
+                <i class="fas fa-home"></i> Back to Menu
+            </button>
+        </div>
     </div>
     <hr>
-    <h3 style="padding:10px;">Review & Master Key</h3>
+    
+    <!-- Filter for Review -->
+    <div style="padding: 10px;">
+        <h3>Review & Master Key</h3>
+        <div class="filter-bar">
+            <button class="filter-btn active" onclick="filterReview('all')">All Questions</button>
+            <button class="filter-btn" onclick="filterReview('mcq')">MCQ Only</button>
+            <button class="filter-btn" onclick="filterReview('essay')">Essay Only</button>
+            <button class="filter-btn" onclick="filterReview('wrong')">Incorrect Only</button>
+        </div>
+    </div>
+    
     <div id="reviewBox"></div>
   </div>
+</div>
+
+<!-- Auto-save Indicator -->
+<div class="autosave-indicator" id="autosaveIndicator">
+    <i class="fas fa-check-circle" style="color: var(--correct);"></i>
+    <span>Draft saved</span>
 </div>
 
 <script>
@@ -171,7 +359,7 @@ const USERS = {
 };
 
 const BANK = [
-    // --- 50 MCQs (Disingkat untuk efisiensi ruang, tetap 50 soal) ---
+    // --- 50 MCQs ---
     { q: "In linear algebra, what is the result of the dot product of two orthogonal vectors?", o: ["1", "-1", "0", "Infinity"], a: 2, e: "Dua vektor ortogonal memiliki dot product nol." },
     { q: "Which matrix property must be satisfied for Ax = B to have a unique solution?", o: ["Det = 0", "Det != 0", "A is row vector", "A is singular"], a: 1, e: "Determinan tidak boleh nol agar matriks memiliki invers." },
     { q: "In 2D coordinate transformation, which functions are used in the rotation matrix?", o: ["Sine and Cosine", "Tan and Cotan", "Sec and Cosec", "Only Sine"], a: 0, e: "Rotasi menggunakan sin dan cos." },
@@ -223,7 +411,7 @@ const BANK = [
     { q: "Phase Center Offset (PCO) for:", o: ["GNSS Antenna", "Transducer", "Laser", "Compass"], a: 0, e: "Pusat elektronik antena." },
     { q: "Kalman Filter integration:", o: ["Hull", "Weather", "GNSS and INS", "Tide"], a: 2, e: "Optimal sensor fusion." },
 
-    // --- 25 ESSAYS (Ditambahkan Sesuai Permintaan) ---
+    // --- 25 ESSAYS ---
     { q: "Explain the difference between Accuracy and Precision.", type: "essay", e: "Precision means all your measurements are very close to each other (consistent). Accuracy means your measurements are very close to the true value (correct). You can be precise but not accurate if you have a systematic error." },
     { q: "What is a Geoid and why is it important for surveyors?", type: "essay", e: "The Geoid is the shape of the Earth based on gravity. It is like the level of the ocean if it covered the whole world. It is important because we use it to measure heights above sea level (Orthometric height)." },
     { q: "Describe the purpose of a Map Projection.", type: "essay", e: "The Earth is round like a ball, but a map is flat. A map projection is a way to put the round Earth onto a flat paper. This always causes some changes (distortions) in size, shape, or distance." },
@@ -257,6 +445,25 @@ let userAns = {};
 let isAdmin = false;
 let timerInterval;
 let startTime;
+let currentQuestionIndex = 0;
+let historyData = [];
+let currentSortOrder = 'date';
+
+// Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        if (!document.getElementById('examScreen').classList.contains('hidden')) {
+            saveDraft();
+        }
+    }
+    if (e.ctrlKey && e.key === 'Enter') {
+        e.preventDefault();
+        if (!document.getElementById('examScreen').classList.contains('hidden')) {
+            submitExam();
+        }
+    }
+});
 
 function login() {
     let name = document.getElementById('candidateName').value.trim();
@@ -276,8 +483,18 @@ function login() {
             document.getElementById('adminTools').classList.remove('hidden');
             document.getElementById('adminCol').classList.remove('hidden');
         }
+        loadDraft();
         refreshHistory();
-    } else { alert("Access Denied."); }
+        updateUserStats();
+    } else { 
+        alert("Access Denied. Please check your credentials."); 
+    }
+}
+
+function logout() {
+    if(confirm("Are you sure you want to logout?")) {
+        location.reload();
+    }
 }
 
 function handleModuleClick() {
@@ -289,10 +506,13 @@ function handleModuleClick() {
 
 function startExam() {
     userAns = {};
+    loadDraft(); // Load any existing draft
     document.getElementById('menuScreen').classList.add('hidden');
     document.getElementById('examScreen').classList.remove('hidden');
+    document.getElementById('displayUser').innerText = `Candidate: ${currentUser}`;
     renderQuestions();
     renderNav();
+    updateProgress();
     startTime = Date.now();
     timerInterval = setInterval(() => {
         let diff = Math.floor((Date.now() - startTime) / 1000);
@@ -309,7 +529,15 @@ function renderQuestions() {
         const badge = q.type === 'essay' ? '<span class="badge-essay">ESSAY</span>' : '<span class="badge-mcq">MCQ</span>';
         
         if(q.type === 'essay') {
-            inputArea = `<textarea placeholder="Type your answer..." oninput="saveEssay(${i}, this.value)">${userAns[i] || ""}</textarea>`;
+            const text = userAns[i] || "";
+            const charCount = text.length;
+            const charClass = charCount < 50 ? 'warning' : '';
+            inputArea = `
+                <textarea id="essay_${i}" placeholder="Type your answer here... (Minimum 50 characters recommended)" oninput="saveEssay(${i}, this.value)">${text}</textarea>
+                <div class="char-counter ${charClass}">
+                    <i class="fas fa-keyboard"></i> ${charCount} characters
+                </div>
+            `;
         } else {
             const lbl = ['A', 'B', 'C', 'D'];
             inputArea = q.o.map((text, oi) => `
@@ -321,8 +549,8 @@ function renderQuestions() {
 
         return `
             <div class="card" id="q_${i}">
-                <p><strong>Question ${i+1}</strong> ${badge}</p>
-                <p>${q.q}</p>
+                <p><strong>Question ${i+1} of ${BANK.length}</strong> ${badge}</p>
+                <p style="font-size: 1.05rem; line-height: 1.7;">${q.q}</p>
                 ${inputArea}
             </div>
         `;
@@ -333,22 +561,96 @@ function saveMCQ(idx, val) {
     userAns[idx] = val;
     renderNav();
     renderQuestions();
+    updateProgress();
+    autoSaveDraft();
 }
 
 function saveEssay(idx, text) {
     userAns[idx] = text;
     renderNav();
+    updateProgress();
+    autoSaveDraft();
 }
 
 function renderNav() {
     document.getElementById('navGrid').innerHTML = BANK.map((_, i) => {
-        const isAnswered = userAns.hasOwnProperty(i) && (typeof userAns[i] === 'number' || userAns[i].trim().length > 0);
-        return `<div class="nav-btn ${isAnswered ? 'answered' : ''}" onclick="document.getElementById('q_${i}').scrollIntoView({behavior:'smooth', block:'center'})">${i+1}</div>`;
+        const isAnswered = userAns.hasOwnProperty(i) && (typeof userAns[i] === 'number' || (userAns[i] && userAns[i].trim().length > 0));
+        const isCurrent = currentQuestionIndex === i;
+        return `<div class="nav-btn ${isAnswered ? 'answered' : ''} ${isCurrent ? 'current' : ''}" 
+                     onclick="jumpToQuestion(${i})" 
+                     title="Question ${i+1}">${i+1}</div>`;
     }).join('');
 }
 
+function jumpToQuestion(idx) {
+    currentQuestionIndex = idx;
+    document.getElementById(`q_${idx}`).scrollIntoView({behavior:'smooth', block:'center'});
+    renderNav();
+}
+
+function updateProgress() {
+    let answered = 0;
+    let mcqAnswered = 0;
+    let essayAnswered = 0;
+    
+    BANK.forEach((q, i) => {
+        const hasAnswer = userAns.hasOwnProperty(i) && (typeof userAns[i] === 'number' || (userAns[i] && userAns[i].trim().length > 0));
+        if(hasAnswer) {
+            answered++;
+            if(q.type === 'essay') essayAnswered++;
+            else mcqAnswered++;
+        }
+    });
+    
+    const progress = (answered / BANK.length) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
+    document.getElementById('progressText').innerText = `${answered}/${BANK.length}`;
+    document.getElementById('mcqCount').innerText = `${mcqAnswered}/50`;
+    document.getElementById('essayCount').innerText = `${essayAnswered}/25`;
+}
+
+function saveDraft() {
+    const draftKey = `krisna_pg01_draft_${currentUser}`;
+    localStorage.setItem(draftKey, JSON.stringify(userAns));
+    showAutosaveIndicator();
+}
+
+function loadDraft() {
+    const draftKey = `krisna_pg01_draft_${currentUser}`;
+    const draft = localStorage.getItem(draftKey);
+    if(draft) {
+        userAns = JSON.parse(draft);
+    }
+}
+
+function autoSaveDraft() {
+    clearTimeout(window.autosaveTimeout);
+    window.autosaveTimeout = setTimeout(() => {
+        saveDraft();
+    }, 2000); // Auto-save after 2 seconds of inactivity
+}
+
+function showAutosaveIndicator() {
+    const indicator = document.getElementById('autosaveIndicator');
+    indicator.classList.add('show');
+    setTimeout(() => {
+        indicator.classList.remove('show');
+    }, 2000);
+}
+
 function submitExam() {
-    if(!confirm("Submit results?")) return;
+    const unanswered = BANK.length - Object.keys(userAns).filter(k => {
+        const val = userAns[k];
+        return typeof val === 'number' || (val && val.trim().length > 0);
+    }).length;
+    
+    let confirmMsg = "Submit your exam now?";
+    if(unanswered > 0) {
+        confirmMsg = `You have ${unanswered} unanswered questions. Submit anyway?`;
+    }
+    
+    if(!confirm(confirmMsg)) return;
+    
     clearInterval(timerInterval);
     
     let mcqScore = 0;
@@ -365,84 +667,263 @@ function submitExam() {
     const totalPossible = BANK.length;
     const finalScore = Math.round(((mcqScore + essayAttempted) / totalPossible) * 100);
     
+    // Clear draft after submission
+    const draftKey = `krisna_pg01_draft_${currentUser}`;
+    localStorage.removeItem(draftKey);
+    
     saveRecord(finalScore);
-    showResult(finalScore, `MCQ: ${mcqScore}/50 | Essay Attempted: ${essayAttempted}/25`);
+    showResult(finalScore, `MCQ Correct: ${mcqScore}/50 | Essay Attempted: ${essayAttempted}/25`);
 }
 
 function showResult(pct, info) {
     document.getElementById('examScreen').classList.add('hidden');
     document.getElementById('resultScreen').classList.remove('hidden');
-    document.getElementById('resScore').innerText = (pct === "KEY" ? "KEY" : pct + "%");
+    document.getElementById('resScore').innerText = (pct === "KEY" ? "MASTER KEY" : pct + "%");
     document.getElementById('resInfo').innerText = info;
     
+    renderReview();
+}
+
+function renderReview() {
     const lbl = ['A', 'B', 'C', 'D'];
     document.getElementById('reviewBox').innerHTML = BANK.map((q, i) => {
         if(q.type === 'essay') {
             return `
-                <div class="card">
+                <div class="card review-item" data-type="essay" data-correct="true">
                     <p><strong>${i+1}. ${q.q}</strong> <span class="badge-essay">ESSAY</span></p>
-                    <div class="user-essay-box"><strong>Your Answer:</strong><br>${userAns[i] || "(No answer)"}</div>
-                    <div class="model-answer-box"><strong>Model Answer:</strong><br>${q.e}</div>
+                    <div class="user-essay-box">
+                        <strong><i class="fas fa-user"></i> Your Answer:</strong><br>
+                        ${userAns[i] || "<em style='color: var(--muted);'>(No answer provided)</em>"}
+                    </div>
+                    <div class="model-answer-box">
+                        <strong><i class="fas fa-graduation-cap"></i> Model Answer:</strong><br>
+                        ${q.e}
+                    </div>
                 </div>
             `;
         } else {
+            const isCorrect = userAns[i] === q.a;
             let opts = q.o.map((text, oi) => {
                 let cls = (oi === q.a) ? 'correct-view' : (userAns[i] === oi ? 'wrong-view' : '');
-                return `<div class="option ${cls}"><strong>${lbl[oi]}.</strong> ${text} ${oi === q.a ? '✓' : ''}</div>`;
+                let icon = (oi === q.a) ? '<i class="fas fa-check-circle" style="color: var(--correct); float: right;"></i>' : '';
+                if(userAns[i] === oi && oi !== q.a) {
+                    icon = '<i class="fas fa-times-circle" style="color: var(--wrong); float: right;"></i>';
+                }
+                return `<div class="option ${cls}"><strong>${lbl[oi]}.</strong> ${text} ${icon}</div>`;
             }).join('');
             return `
-                <div class="card">
+                <div class="card review-item" data-type="mcq" data-correct="${isCorrect}">
                     <p><strong>${i+1}. ${q.q}</strong> <span class="badge-mcq">MCQ</span></p>
                     ${opts}
-                    <div class="explanation-box"><strong>Explanation:</strong><br>${q.e}</div>
+                    <div class="explanation-box">
+                        <strong><i class="fas fa-lightbulb"></i> Explanation:</strong><br>
+                        ${q.e}
+                    </div>
                 </div>
             `;
         }
     }).join('');
 }
 
+function filterReview(type) {
+    // Update active button
+    document.querySelectorAll('.filter-bar .filter-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    const items = document.querySelectorAll('.review-item');
+    items.forEach(item => {
+        if(type === 'all') {
+            item.style.display = 'block';
+        } else if(type === 'mcq') {
+            item.style.display = item.dataset.type === 'mcq' ? 'block' : 'none';
+        } else if(type === 'essay') {
+            item.style.display = item.dataset.type === 'essay' ? 'block' : 'none';
+        } else if(type === 'wrong') {
+            item.style.display = item.dataset.correct === 'false' ? 'block' : 'none';
+        }
+    });
+}
+
 function showMasterKey() {
     userAns = {};
-    showResult("KEY", "Displaying Master Key for PG01");
+    // Fill all correct answers for MCQ
+    BANK.forEach((q, i) => {
+        if(q.type !== 'essay') {
+            userAns[i] = q.a;
+        }
+    });
+    showResult("KEY", "Master Key - All correct answers and model essays displayed");
 }
 
 function saveRecord(s) {
     let data = JSON.parse(localStorage.getItem('krisna_pg01_db') || '[]');
-    data.push({n: currentUser, s: s, d: new Date().toLocaleString()});
+    data.push({
+        n: currentUser, 
+        s: s, 
+        d: new Date().toLocaleString(),
+        timestamp: Date.now()
+    });
     localStorage.setItem('krisna_pg01_db', JSON.stringify(data));
 }
 
 function refreshHistory() {
-    let data = JSON.parse(localStorage.getItem('krisna_pg01_db') || '[]');
-    document.getElementById('histBody').innerHTML = data.reverse().map((h, i) => `
-        <tr>
-            <td style="padding:10px; border-bottom:1px solid #eee;">${h.n}</td>
-            <td style="padding:10px; border-bottom:1px solid #eee;"><strong>${h.s}%</strong></td>
-            <td style="padding:10px; border-bottom:1px solid #eee;"><small>${h.d}</small></td>
-            <td class="${isAdmin?'':'hidden'}" style="text-align:center; border-bottom:1px solid #eee;">
-                <button onclick="deleteSingle(${data.length-1-i})" style="background:none; color:red; width:auto; padding:0;"><i class="fas fa-trash"></i></button>
-            </td>
-        </tr>
-    `).join('') || '<tr><td colspan="4" style="text-align:center; padding:20px; color:#999;">No history.</td></tr>';
+    historyData = JSON.parse(localStorage.getItem('krisna_pg01_db') || '[]');
+    displayHistory(historyData);
+}
+
+function displayHistory(data) {
+    const tbody = document.getElementById('histBody');
+    if(data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:20px; color:#999;"><i class="fas fa-inbox"></i><br>No exam history yet.</td></tr>';
+        return;
+    }
+    
+    tbody.innerHTML = data.slice().reverse().map((h, i) => {
+        const scoreColor = h.s >= 80 ? 'var(--correct)' : h.s >= 60 ? 'var(--warning)' : 'var(--wrong)';
+        return `
+            <tr>
+                <td style="padding:10px; border-bottom:1px solid #eee;">
+                    <i class="fas fa-user-circle" style="color: var(--teal); margin-right: 5px;"></i>
+                    ${h.n}
+                </td>
+                <td style="padding:10px; border-bottom:1px solid #eee;">
+                    <strong style="color: ${scoreColor}; font-size: 1.1rem;">${h.s}%</strong>
+                </td>
+                <td style="padding:10px; border-bottom:1px solid #eee;">
+                    <small><i class="fas fa-clock" style="color: var(--muted); margin-right: 3px;"></i>${h.d}</small>
+                </td>
+                <td class="${isAdmin?'':'hidden'}" style="text-align:center; border-bottom:1px solid #eee;">
+                    <button onclick="deleteSingle(${data.length-1-i})" style="background:none; color:red; width:auto; padding:5px 10px; border: 1px solid red; border-radius: 4px;" title="Delete this record">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function filterHistory() {
+    const searchTerm = document.getElementById('searchHistory').value.toLowerCase();
+    const filtered = historyData.filter(h => h.n.toLowerCase().includes(searchTerm));
+    displayHistory(filtered);
+}
+
+function sortHistory(type) {
+    // Update active button
+    document.querySelectorAll('.filter-bar .filter-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    let sorted = [...historyData];
+    if(type === 'date') {
+        sorted.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+    } else if(type === 'score') {
+        sorted.sort((a, b) => b.s - a.s);
+    } else if(type === 'name') {
+        sorted.sort((a, b) => a.n.localeCompare(b.n));
+    }
+    displayHistory(sorted);
+}
+
+function updateUserStats() {
+    const data = JSON.parse(localStorage.getItem('krisna_pg01_db') || '[]');
+    const userRecords = data.filter(h => h.n === currentUser);
+    
+    if(userRecords.length === 0) {
+        document.getElementById('userAttempts').innerText = '0';
+        document.getElementById('userBestScore').innerText = '-';
+        document.getElementById('userAvgScore').innerText = '-';
+        document.getElementById('userLastDate').innerText = '-';
+        return;
+    }
+    
+    const scores = userRecords.map(h => h.s);
+    const best = Math.max(...scores);
+    const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+    const lastDate = userRecords[userRecords.length - 1].d.split(',')[0];
+    
+    document.getElementById('userAttempts').innerText = userRecords.length;
+    document.getElementById('userBestScore').innerText = best + '%';
+    document.getElementById('userAvgScore').innerText = avg + '%';
+    document.getElementById('userLastDate').innerText = lastDate;
 }
 
 function deleteSingle(i) {
+    if(!confirm("Delete this record permanently?")) return;
     let data = JSON.parse(localStorage.getItem('krisna_pg01_db') || '[]');
     data.splice(i, 1);
     localStorage.setItem('krisna_pg01_db', JSON.stringify(data));
     refreshHistory();
+    updateUserStats();
 }
 
-function clearAllData() { if(confirm("Wipe all?")) { localStorage.removeItem('krisna_pg01_db'); refreshHistory(); } }
+function clearAllData() { 
+    if(confirm("⚠️ WARNING: This will permanently delete ALL exam records. Continue?")) { 
+        if(confirm("Are you absolutely sure? This action cannot be undone!")) {
+            localStorage.removeItem('krisna_pg01_db'); 
+            refreshHistory(); 
+            updateUserStats();
+            alert("All data has been cleared.");
+        }
+    } 
+}
+
 function exportCSV() {
     let data = JSON.parse(localStorage.getItem('krisna_pg01_db') || '[]');
-    let csv = "Candidate,Score,Date\n" + data.map(h => `"${h.n}",${h.s},"${h.d}"`).join('\n');
-    let a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
-    a.download = 'PG01_Results.csv';
-    a.click();
+    let csv = "Candidate,Score,Date,Timestamp\n" + data.map(h => 
+        `"${h.n}",${h.s},"${h.d}","${h.timestamp || ''}"`
+    ).join('\n');
+    downloadFile(csv, 'PG01_Results.csv', 'text/csv');
 }
-function exitExam() { if(confirm("Cancel?")) location.reload(); }
+
+function exportJSON() {
+    let data = JSON.parse(localStorage.getItem('krisna_pg01_db') || '[]');
+    const json = JSON.stringify(data, null, 2);
+    downloadFile(json, 'PG01_Results.json', 'application/json');
+}
+
+function downloadFile(content, filename, type) {
+    const blob = new Blob([content], {type: type});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(a.href);
+}
+
+function printResult() {
+    window.print();
+}
+
+function exitExam() { 
+    if(confirm("Exit exam? Your progress will be saved as draft.")) {
+        saveDraft();
+        clearInterval(timerInterval);
+        location.reload();
+    }
+}
+
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const icon = document.querySelector('.theme-toggle i');
+    if(document.body.classList.contains('dark-mode')) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+        localStorage.setItem('darkMode', 'enabled');
+    } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+        localStorage.setItem('darkMode', 'disabled');
+    }
+}
+
+// Load dark mode preference
+window.addEventListener('DOMContentLoaded', () => {
+    if(localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+        document.querySelector('.theme-toggle i').classList.replace('fa-moon', 'fa-sun');
+    }
+});
+
 </script>
 </body>
 </html>
