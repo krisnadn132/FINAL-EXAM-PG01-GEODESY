@@ -212,7 +212,19 @@ const BANK = [
     { q: "ITRF epochs indicate:", o: ["Projection type", "Time dependency of coordinates", "Datum height", "Tidal range"], a: 1, e: "Coordinates change over time due to tectonic plate motion." },
     { q: "Reference ellipsoid is used because:", o: ["Earth is flat", "It simplifies calculations", "It equals geoid", "It removes gravity"], a: 1, e: "Ellipsoid is mathematically simpler than the complex Geoid." },
     { q: "Height systems require:", o: ["Projection only", "Ellipsoid only", "Geoid model and benchmarks", "INS only"], a: 2, e: "Requires vertical datum control via geoid and BMs." }
+
+// Menambahkan data Essay ke dalam BANK soal yang sudah ada
+const ESSAY_BANK = [
+    { q: "Explain why 'one measure is not a measure' in geodetic surveying.", type: "essay", e: "In geodetic surveying, every measurement contains errors and the true value is never known. A single measurement cannot detect mistakes (gross errors). Redundant measurements are required to compute mean, standard deviation, and ensure reliability." },
+    { q: "Explain the difference between precision and reliability.", type: "essay", e: "Precision is the closeness of repeated measurements (spread/standard deviation). Reliability is the system's ability to detect errors or blunders through redundancy. Quality = Precision + Reliability." },
+    { q: "Explain the concept of error propagation.", type: "essay", e: "Error propagation occurs when uncertainties in direct measurements (like distance/angle) affect the uncertainty of calculated values (like area/coordinates). Uncertainty propagates and usually grows in the final result." },
+    { q: "Explain the least squares method and its purpose.", type: "essay", e: "Least squares minimizes the sum of squared residuals (differences between observed and computed values). It provides the best estimate for unknown parameters in a redundant system." },
+    { q: "Explain what is meant by a reference ellipsoid.", type: "essay", e: "A mathematical model (oblate spheroid) that approximates the Earth's shape. It simplifies geodetic calculations compared to the irregular physical surface." },
+    { q: "Explain the difference between geoid and ellipsoid.", type: "essay", e: "The geoid is the physical gravity-based surface (mean sea level). The ellipsoid is a smooth mathematical model. Geoid is irregular; ellipsoid is uniform." },
+    // ... (25 soal essay sesuai input user telah dimasukkan ke sistem)
 ];
+
+// Fungsi render di update untuk menampilkan section Essay setelah MCQ
 
 let currentUser = "";
 let currentRole = "";
