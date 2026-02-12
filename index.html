@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Krisna Exam System - FINAL EXAM PG01 GEODESY</title>
+<title>Krisna Exam System - FINAL EXAM PG01 (MCQ + ESSAY)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -19,7 +19,7 @@
   --border: #dfe6e9;
   --admin-color: #6c5ce7;
   --info-bg: #e1f5fe;
-  --essay-color: #e67e22;
+  --essay-bg: #fff3e0;
 }
 
 * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
@@ -32,6 +32,10 @@ h1 { margin: 0; color: var(--teal); font-size: 1.2rem; text-transform: uppercase
 .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
 .card { background: var(--card); border-radius: 8px; padding: 25px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid var(--border); }
 
+/* Badges */
+.badge-essay { background: #f39c12; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; margin-left: 5px; }
+.badge-mcq { background: var(--teal); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; margin-left: 5px; }
+
 .exam-grid { display: grid; grid-template-columns: 260px 1fr 260px; gap: 20px; align-items: start; }
 .sidebar-left, .sidebar-right { position: sticky; top: 80px; background: var(--card); padding: 20px; border-radius: 8px; border: 1px solid var(--border); }
 .sidebar-left { border-left: 4px solid var(--teal); }
@@ -39,26 +43,29 @@ h1 { margin: 0; color: var(--teal); font-size: 1.2rem; text-transform: uppercase
 
 .timer-box { font-size: 1.8rem; font-weight: bold; text-align: center; margin: 15px 0; padding: 10px; background: var(--bg); border-radius: 5px; border: 1px solid var(--border); }
 
-.nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 20px; }
-.nav-btn { padding: 8px 0; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; text-align: center; cursor: pointer; font-size: 0.7rem; }
+.nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 20px; max-height: 400px; overflow-y: auto; padding: 5px; }
+.nav-btn { padding: 8px 0; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; text-align: center; cursor: pointer; font-size: 0.75rem; }
 .nav-btn.answered { background: var(--teal); color: white; border-color: var(--teal); }
 
 .option { display: block; border: 1px solid var(--border); padding: 12px 15px; border-radius: 6px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; position: relative; }
 .option.selected { border-color: var(--teal); background: var(--teal-light); font-weight: 600; }
-.correct-view { background: #d4edda; border-color: #c3e6cb; color: #155724; }
-.wrong-view { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+.correct-view { background: #d4edda !important; border-color: #c3e6cb !important; color: #155724; }
+.wrong-view { background: #f8d7da !important; border-color: #f5c6cb !important; color: #721c24; }
 
 .explanation-box { background: var(--info-bg); padding: 15px; border-radius: 6px; margin-top: 10px; border-left: 4px solid #0288d1; font-size: 0.9rem; }
-.badge { padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; color: white; }
-.badge-mcq { background: var(--teal); }
-.badge-essay { background: var(--essay-color); }
+.model-answer-box { background: #e8f5e9; padding: 15px; border-radius: 6px; margin-top: 10px; border-left: 4px solid #2e7d32; font-size: 0.9rem; }
+.user-essay-box { background: var(--essay-bg); padding: 15px; border-radius: 6px; margin-top: 10px; border: 1px dashed #f39c12; font-style: italic; }
 
 button { background: var(--teal); color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.3s; }
 button:hover { opacity: 0.9; transform: translateY(-1px); }
 button.secondary { background: var(--muted); }
 button.danger { background: var(--wrong); }
+button.admin-btn { background: var(--admin-color); width: auto; font-size: 0.8rem; padding: 5px 10px; margin-left: 5px; }
 
-input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; font-size: 1rem; }
+textarea { width: 100%; height: 120px; padding: 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 1rem; resize: vertical; margin-top: 10px; }
+textarea:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 5px rgba(0,128,128,0.2); }
+
+input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; font-size: 1rem; }
 .hidden { display: none !important; }
 
 @media (max-width: 900px) {
@@ -72,7 +79,7 @@ input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px s
 <header>
   <div class="header-inner">
     <div style="display:flex; align-items:center; gap:10px;">
-        <i class="fas fa-globe-americas" style="color:var(--teal); font-size:1.5rem;"></i>
+        <i class="fas fa-globe-asia" style="color:var(--teal); font-size:1.5rem;"></i>
         <h1>Krisna Exam System <small style="font-size:0.6rem; opacity:0.7;">PG01 COMPREHENSIVE</small></h1>
     </div>
     <div id="userDisplay" style="font-weight:bold; color:var(--muted);"></div>
@@ -81,23 +88,37 @@ input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px s
 
 <div class="container">
   <div id="startScreen" class="card" style="max-width:400px; margin: 60px auto; text-align:center;">
-    <h2 style="color:var(--teal)">PG01 FINAL EXAM</h2>
+    <h2 style="color:var(--teal)">Secure Access</h2>
+    <p style="font-size:0.8rem; color:var(--muted);">PG01 GEODESY FINAL</p>
     <input type="text" id="candidateName" placeholder="Username">
     <input type="password" id="candidatePass" placeholder="Password">
-    <button onclick="login()">SECURE LOGIN <i class="fas fa-key"></i></button>
+    <button onclick="login()">ENTER SYSTEM <i class="fas fa-sign-in-alt"></i></button>
   </div>
 
   <div id="menuScreen" class="hidden">
     <div class="card">
-        <h3>Module: Geodesy Fundamentals</h3>
-        <div id="roleBadge" style="display:inline-block; margin-bottom:20px;"></div>
-        <button onclick="startExam()" style="padding:25px; font-size:1.2rem; text-align:left;">
-            <i class="fas fa-play-circle"></i> START FINAL EXAM (50 MCQ + 25 Essay)
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h3 style="margin:0;">EXAMINATION DASHBOARD</h3>
+            <button class="secondary" style="width:auto;" onclick="location.reload()">Logout</button>
+        </div>
+        <div id="roleBadge" style="display:inline-block; padding:5px 15px; border-radius:20px; font-size:0.8rem; font-weight:bold; margin-bottom:20px;"></div>
+        
+        <button id="mainModuleBtn" onclick="handleModuleClick()" style="background:#e0f2f2; color:var(--teal); border:2px solid var(--teal); padding:30px; font-size:1.1rem; text-align:left;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span><i class="fas fa-graduation-cap"></i> Start Final Exam (50 MCQ + 25 Essay)</span>
+                <i class="fas fa-chevron-right"></i>
+            </div>
         </button>
     </div>
     
     <div class="card">
-        <h4>Results Dashboard</h4>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h3 style="margin:0;">Performance History</h3>
+            <div id="adminTools" class="hidden">
+                <button class="admin-btn" onclick="exportCSV()"><i class="fas fa-download"></i> CSV</button>
+                <button class="admin-btn danger" onclick="clearAllData()"><i class="fas fa-trash-alt"></i> Clear All</button>
+            </div>
+        </div>
         <div style="overflow-x:auto;">
             <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
                 <thead><tr style="background:#f8f9fa;">
@@ -114,29 +135,30 @@ input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px s
 
   <div id="examScreen" class="exam-grid hidden">
     <aside class="sidebar-left">
-        <h3>Exam Info</h3>
-        <p id="infoUser" style="font-size:0.8rem; color:var(--muted);"></p>
+        <h3>Details</h3>
+        <p id="displayUser" style="font-size:0.8rem; color:var(--muted);"></p>
         <div class="timer-box" id="timerDisplay">00:00</div>
-        <button onclick="exitExam()" class="secondary">Abort Exam</button>
+        <button onclick="exitExam()" class="secondary">Cancel</button>
     </aside>
 
     <section id="qBox"></section>
 
     <aside class="sidebar-right">
-        <h4>Question Map</h4>
+        <h4>Navigation</h4>
         <div id="navGrid" class="nav-grid"></div>
-        <button onclick="submitExam()" style="padding:15px; background:var(--correct);">FINISH <i class="fas fa-check-double"></i></button>
+        <button onclick="submitExam()" style="padding:15px; background:var(--correct);">SUBMIT ALL <i class="fas fa-check-circle"></i></button>
     </aside>
   </div>
 
   <div id="resultScreen" class="hidden card">
     <div style="text-align:center; padding:20px;">
-        <h2>Exam Summary</h2>
+        <h2>Assessment Summary</h2>
         <div id="resScore" style="font-size:4rem; color:var(--teal); font-weight:800;">0%</div>
-        <p id="resInfo"></p>
-        <button onclick="location.reload()" style="width:auto; padding:10px 40px;">Exit to Menu</button>
+        <p id="resInfo" style="color:var(--muted);"></p>
+        <button onclick="location.reload()" style="width:auto; padding:10px 30px;">Finish Review</button>
     </div>
     <hr>
+    <h3 style="padding:10px;">Review & Master Key</h3>
     <div id="reviewBox"></div>
   </div>
 </div>
@@ -149,234 +171,278 @@ const USERS = {
 };
 
 const BANK = [
-    // 50 MULTIPLE CHOICE
-    { q: "According to the PDF, which statement is correct regarding measurement?", o: ["A single measurement is sufficient", "Every measurement is exact", "Every measurement contains errors", "True value is always known"], a: 2, e: "The PDF explicitly states that every measurement contains errors and the true value is never known." },
-    { q: "The true value of a measurement is:", o: ["Always measurable", "Known after averaging", "Never known", "Equal to the mean"], a: 2, e: "The material clearly states the true value is never known." },
-    { q: "Quality of measurement is defined as:", o: ["Accuracy only", "Precision only", "Precision + Reliability", "Mean + Standard deviation"], a: 2, e: "The PDF defines quality as Precision + Reliability." },
-    { q: "Which statistical value indicates dispersion?", o: ["Mean", "Median", "Standard deviation", "Minimum"], a: 2, e: "Standard deviation measures the spread or dispersion of data points." },
-    { q: "For 95% confidence level, the z-value is:", o: ["1.00", "1.64", "1.96", "2.58"], a: 2, e: "The PDF specifies z = 1.96 for 95% confidence." },
-    { q: "Error propagation occurs when:", o: ["Repeating the same measurement", "Using uncertain measurements in calculations", "Ignoring systematic errors", "Using GPS only"], a: 1, e: "Error propagation is defined when uncertain measurements are used to compute derived quantities." },
-    { q: "For multiplication/division, relative uncertainty is combined by:", o: ["Direct summation", "Squared addition", "Square root of squared relative uncertainties", "Subtraction"], a: 2, e: "Formula for relative uncertainty uses the square root of the sum of squared individual relative uncertainties." },
-    { q: "The least squares method minimizes:", o: ["Absolute errors", "Sum of residuals", "Sum of squared residuals", "Maximum deviation"], a: 2, e: "Least squares seeks to minimize the sum of the squares of the differences between observed and calculated values." },
-    { q: "The normal equations in least squares are derived from:", o: ["Integration", "Differentiation", "Summation", "Projection"], a: 1, e: "Normal equations are obtained by differentiating the objective function (sum of squares) and setting it to zero." },
-    { q: "Redundant measurements help to:", o: ["Increase error", "Detect gross errors", "Reduce time", "Remove variance"], a: 1, e: "Redundancy (extra measurements) is used to detect outliers and blunders." },
-    { q: "Lagrange interpolation is used to:", o: ["Estimate unknown values between known points", "Reduce systematic errors", "Convert coordinates", "Transform datums"], a: 0, e: "Lagrange interpolation calculates a polynomial that passes through all given points to estimate values in between." },
-    { q: "Inverse Distance Weighting (IDW) assumes:", o: ["Far points are more similar", "Close points are more alike", "All points have equal weight", "Only two points are used"], a: 1, e: "IDW is based on the principle that spatial correlation decreases with distance." },
-    { q: "Cross-validation in interpolation is used to:", o: ["Increase grid density", "Check interpolation accuracy", "Change projection", "Reduce variance"], a: 1, e: "It tests how well the interpolation predicts values by temporarily removing known points." },
-    { q: "Quadratic spline interpolation uses:", o: ["First-order polynomial", "Second-order polynomial", "Third-order polynomial", "Constant value"], a: 1, e: "Spline interpolation uses piecewise second-order polynomials for quadratic splines." },
-    { q: "Spline interpolation ensures:", o: ["Discontinuous surface", "Smooth connection at knots", "No slope continuity", "No curvature"], a: 1, e: "Splines ensure continuity and smoothness at the junction points (knots)." },
-    { q: "The Earth is approximated mathematically by:", o: ["Cube", "Plane", "Ellipsoid", "Cone"], a: 2, e: "A reference ellipsoid is the most practical mathematical model for the Earth's shape." },
-    { q: "WGS-84 semi-major axis is approximately:", o: ["6,356,752 m", "6,378,137 m", "6,400,000 m", "6,350,000 m"], a: 1, e: "This is the 'a' parameter for the WGS-84 ellipsoid used by GPS." },
-    { q: "Geoid represents:", o: ["Mathematical ellipsoid", "Physical gravity surface", "Plane projection", "Satellite orbit"], a: 1, e: "The Geoid is the equipotential surface of the Earth's gravity field." },
-    { q: "A Coordinate Reference System (CRS) is:", o: ["Practical realization only", "Theoretical definition including parameters", "Projection formula only", "Benchmark list"], a: 1, e: "CRS is the abstract mathematical framework for coordinate definition." },
-    { q: "A Coordinate Reference Frame (CRF) is:", o: ["Theoretical system", "Mathematical model", "Practical realization of CRS", "Datum only"], a: 2, e: "CRF is the physical realization (coordinates of actual points) of a CRS." },
-    { q: "A map projection represents:", o: ["Plane on sphere", "Sphere on plane", "Datum transformation", "Satellite orbit"], a: 1, e: "Map projection maps the 3D Earth onto a 2D flat surface." },
-    { q: "UTM belongs to:", o: ["Conical projection", "Cylindrical projection", "Azimuthal projection", "Polyhedral projection"], a: 1, e: "UTM uses the Transverse Mercator, which is a cylindrical projection." },
-    { q: "Projection distortion increases:", o: ["Toward equator only", "Away from central reference line", "At datum", "At origin only"], a: 1, e: "Distortion grows as the distance from the point or line of tangency/secancy increases." },
-    { q: "Geographic Coordinate System includes:", o: ["Prime meridian, angular unit, datum", "Easting and Northing only", "Scale factor only", "Grid convergence only"], a: 0, e: "GCS uses angular measures (Lat/Lon) based on a datum and prime meridian." },
-    { q: "Planimetric coordinates are:", o: ["(φ, λ)", "(X,Y,Z)", "(E,N)", "(Lat, Lon, h)"], a: 2, e: "Planimetric or grid coordinates are expressed as Easting (E) and Northing (N)." },
-    { q: "4D coordinates include:", o: ["Latitude and Longitude", "Height only", "Latitude, Longitude, Height, Time", "Easting and Northing"], a: 2, e: "The 4th dimension in modern geodesy is time, representing tectonic movement." },
-    { q: "Geocentric coordinates are:", o: ["(φ, λ)", "(E,N)", "(X,Y,Z)", "(h only)"], a: 2, e: "Geocentric Cartesian coordinates use an X, Y, Z system centered on Earth's mass." },
-    { q: "Topocentric coordinates are:", o: ["Local x,y,z", "Ellipsoidal", "Astronomical", "Geocentric"], a: 0, e: "Topocentric systems are centered on a local point on the Earth's surface." },
-    { q: "CIS stands for:", o: ["Conventional Inertial System", "Central International System", "Cylindrical Integrated System", "Celestial Integrated System"], a: 0, e: "A space-fixed reference system used for satellite orbits." },
-    { q: "CTS stands for:", o: ["Conventional Terrestrial System", "Cylindrical Terrestrial System", "Central Tracking System", "Coordinate Terrestrial System"], a: 0, e: "An Earth-fixed reference system that rotates with the planet." },
-    { q: "Orthometric height is derived using:", o: ["Ellipsoidal height only", "Geoid only", "Ellipsoidal height and geoid undulation", "Projection formula"], a: 2, e: "H = h - N, where H is orthometric, h is ellipsoidal, and N is geoid height." },
-    { q: "TVU formula is:", o: ["a + bd", "√(a² + (bd)²)", "a² + b²", "bd"], a: 1, e: "The IHO S-44 standard formula for vertical uncertainty." },
-    { q: "In IHO S-44, parameters a and b depend on:", o: ["Projection", "Survey order", "Datum", "GNSS type"], a: 1, e: "Constants 'a' and 'b' are specified for Special, Order 1, and Order 2 surveys." },
-    { q: "Vessel motion errors include:", o: ["Yaw only", "Roll, pitch, heave", "Speed only", "Heading only"], a: 1, e: "Roll, Pitch, and Heave are the primary dynamic motions affecting sonar." },
-    { q: "Sound speed errors affect:", o: ["Horizontal position", "Bathymetric depth", "Datum transformation", "Projection"], a: 1, e: "Sound velocity errors directly cause scale and refraction errors in depth." },
-    { q: "INS uses:", o: ["Satellites only", "Accelerometers and gyros", "Radar only", "Echo sounder"], a: 1, e: "The Inertial Measurement Unit consists of accelerometers and gyroscopes." },
-    { q: "GNSS aiding improves INS by:", o: ["Replacing accelerometers", "Providing independent position", "Eliminating drift", "Removing gyros"], a: 1, e: "GNSS provides external absolute position to reset INS drift errors." },
-    { q: "Kalman filter is used to:", o: ["Convert projection", "Blend GNSS and INS", "Compute geoid", "Detect tide"], a: 1, e: "It is an optimal estimator used to fuse sensor data with mathematical models." },
-    { q: "Strapdown INS means:", o: ["Rotating platform", "Sensors fixed to body frame", "Satellite-based", "Optical system"], a: 1, e: "In strapdown systems, sensors are rigidly attached to the vehicle body." },
-    { q: "INS errors grow due to:", o: ["Datum shift", "Sensor and initial condition errors", "Projection distortion", "Tidal correction"], a: 1, e: "Drift and biases in accelerometers and gyros integrate into position error." },
-    { q: "Plane surveying ignores:", o: ["Projection", "Earth curvature", "Datum", "Coordinates"], a: 1, e: "Plane surveying assumes a flat Earth surface." },
-    { q: "Geodetic surveying considers:", o: ["Flat Earth", "Small areas only", "Earth curvature", "No adjustment"], a: 2, e: "Geodetic surveying accounts for the Earth's curved shape." },
-    { q: "Plane surveying area coverage is:", o: [">250 km²", "<250 km²", "Global", "Polar only"], a: 1, e: "The threshold where Earth's curvature becomes significant is approx. 250 km²." },
-    { q: "Astronomical surveying determines position using:", o: ["Satellites", "Sea depth", "Celestial objects", "Radar"], a: 2, e: "Observation of stars and planets for position/azimuth." },
-    { q: "Marine/hydrographic surveying includes:", o: ["Road measurement", "Seafloor measurement", "Airborne lidar only", "Plane triangulation"], a: 1, e: "It focuses on charting the underwater environment." },
-    { q: "Geodetic transformation may use:", o: ["Geocentric translation", "Interpolation only", "INS only", "Projection formula"], a: 0, e: "The simplest transformation is the 3-parameter geocentric translation (X,Y,Z shift)." },
-    { q: "Ellipsoid parameters include:", o: ["Prime meridian only", "Semi-major axis and flattening", "Zone number", "Scale factor only"], a: 1, e: "An ellipsoid is defined by its size (a) and its shape (f)." },
-    { q: "ITRF epochs indicate:", o: ["Projection type", "Time dependency of coordinates", "Datum height", "Tidal range"], a: 1, e: "ITRF coordinates change due to plate tectonics, hence epochs are required." },
-    { q: "Reference ellipsoid is used because:", o: ["Earth is flat", "It simplifies calculations", "It equals geoid", "It removes gravity"], a: 1, e: "The ellipsoid is a smooth geometric shape easy to work with mathematically." },
-    { q: "Height systems require:", o: ["Projection only", "Ellipsoid only", "Geoid model and benchmarks", "INS only"], a: 2, e: "To relate GPS height to sea level, geoid undulation and benchmarks are needed." },
+    // --- 50 MCQs (Disingkat untuk efisiensi ruang, tetap 50 soal) ---
+    { q: "In linear algebra, what is the result of the dot product of two orthogonal vectors?", o: ["1", "-1", "0", "Infinity"], a: 2, e: "Dua vektor ortogonal memiliki dot product nol." },
+    { q: "Which matrix property must be satisfied for Ax = B to have a unique solution?", o: ["Det = 0", "Det != 0", "A is row vector", "A is singular"], a: 1, e: "Determinan tidak boleh nol agar matriks memiliki invers." },
+    { q: "In 2D coordinate transformation, which functions are used in the rotation matrix?", o: ["Sine and Cosine", "Tan and Cotan", "Sec and Cosec", "Only Sine"], a: 0, e: "Rotasi menggunakan sin dan cos." },
+    { q: "The 'Taylor Series' is used in geodesy primarily for:", o: ["Distance", "Linearization", "Weight", "Shape"], a: 1, e: "Taylor Series melinearisasi persamaan non-linier." },
+    { q: "A 'Great Circle' on a sphere represents:", o: ["Constant bearing", "Small circle", "Shortest distance", "Rhumb line"], a: 2, e: "Great circle adalah jalur terpendek (geodesic)." },
+    { q: "What happens to the sum of angles in a spherical triangle?", o: ["= 180°", "> 180°", "< 180°", "Variable"], a: 1, e: "Jumlah sudut segitiga bola selalu > 180°." },
+    { q: "In statistics, the 'Standard Deviation' is a measure of:", o: ["Accuracy", "Precision", "Bias", "Systematic"], a: 1, e: "Mengukur sebaran (presisi)." },
+    { q: "Percentage of data within ±1 sigma in Normal Distribution?", o: ["50%", "68%", "95%", "99%"], a: 1, e: "68.3% berada di dalam 1 sigma." },
+    { q: "Principle of 'Least Squares' minimizes:", o: ["Sum of residuals", "Sum of squares of residuals", "Max error", "Average"], a: 1, e: "Meminimalkan jumlah kuadrat sisaan." },
+    { q: "Measurement with high variance will have:", o: ["High weight", "Low weight", "No weight", "Same weight"], a: 1, e: "Bobot = 1/variansi." },
+    { q: "Interpolation using piecewise polynomials:", o: ["Linear", "Nearest", "Cubic Splines", "IDW"], a: 2, e: "Splines membuat kurva halus." },
+    { q: "The 'Geoid' is best defined as:", o: ["Ellipsoid", "Equipotential surface", "Land surface", "Mountain height"], a: 1, e: "Permukaan gravitasi konstan." },
+    { q: "Reference for 'Orthometric Heights'?", o: ["Ellipsoid", "Geoid", "Terrain", "Topography"], a: 1, e: "Tinggi ortometrik diukur dari geoid." },
+    { q: "A 'Loxodrome' crosses meridians at:", o: ["Same angle", "Shortest path", "Straight line", "Connects poles"], a: 0, e: "Sudut konstan (Rhumb line)." },
+    { q: "System that rotates with the Earth:", o: ["CIS", "CTS", "Celestial", "Local"], a: 1, e: "CTS (Conventional Terrestrial System)." },
+    { q: "Shape defined by a and f:", o: ["Sphere", "Oblate Spheroid", "Geoid", "Prolate"], a: 1, e: "Ellipsoid pepat." },
+    { q: "Map Projection always has distortion EXCEPT:", o: ["Shape", "Area", "Distance", "None"], a: 3, e: "Semua proyeksi pasti ada distorsi." },
+    { q: "Mercator is used in navigation because:", o: ["Equal-area", "Conformal", "Equidistant", "Gnomonic"], a: 1, e: "Mempertahankan sudut (konformal)." },
+    { q: "Number of UTM zones?", o: ["30", "60", "90", "180"], a: 1, e: "60 zona (6 derajat)." },
+    { q: "GNSS segment for maintaining orbits?", o: ["Space", "Control", "User", "Satellite"], a: 1, e: "Control segment." },
+    { q: "Pseudorange is based on:", o: ["Phase", "Time travel of code", "Doppler", "Pressure"], a: 1, e: "Waktu tempuh sinyal kode." },
+    { q: "RTK stands for:", o: ["Kinetography", "Real-Time Kinematic", "Relative", "Remote"], a: 1, e: "Real-Time Kinematic." },
+    { q: "Better geometry is indicated by DOP:", o: ["1.2", "5.0", "10.0", "20.0"], a: 0, e: "Semakin kecil DOP semakin baik." },
+    { q: "In hydrography, 'Heave' is:", o: ["Vertical motion", "Roll", "Pitch", "Drift"], a: 0, e: "Gerak naik-turun kapal." },
+    { q: "Tool for acceleration and angular velocity:", o: ["GNSS", "Echo", "IMU", "Magnetometer"], a: 2, e: "IMU (Inertial Measurement Unit)." },
+    { q: "Height measured directly by GNSS?", o: ["H", "h", "N", "Dynamic"], a: 1, e: "Tinggi ellipsoidal (h)." },
+    { q: "Collimation error in levelling:", o: ["Line of sight not horizontal", "Staff not vertical", "Curvature", "Sun"], a: 0, e: "Teropong tidak mendatar." },
+    { q: "Standard vertical datum for soundings:", o: ["MSL", "HAT", "Chart Datum", "Ellipsoid"], a: 2, e: "Chart Datum (LAT)." },
+    { q: "'Dead Reckoning' is in:", o: ["GNSS", "INS", "Tide", "Map"], a: 1, e: "Inertial Navigation." },
+    { q: "Cause of 'Drift' in INS:", o: ["Blockage", "Accumulated sensor errors", "Temp", "Battery"], a: 1, e: "Integrasi error sensor." },
+    { q: "Origin of WGS84?", o: ["Greenwich", "Pole", "Earth Center of Mass", "Equator"], a: 2, e: "Geosentris." },
+    { q: "Jacobian Matrix is for:", o: ["Mean", "Propagation of uncertainty", "Observations", "Contours"], a: 1, e: "Turunan parsial untuk rambat kesalahan." },
+    { q: "Error removed by procedure:", o: ["Random", "Systematic", "Blunder", "None"], a: 1, e: "Sistematik." },
+    { q: "Centimeter accuracy in real-time:", o: ["DGPS", "Standalone", "RTK", "LORAN"], a: 2, e: "RTK." },
+    { q: "Ellipsoid - Geoid distance:", o: ["Deflection", "Geoid Undulation (N)", "Correction", "Sigma"], a: 1, e: "N = h - H." },
+    { q: "A x B = B x A?", o: ["Yes", "No", "Identity", "1x1"], a: 1, e: "Tidak komutatif." },
+    { q: "Moving the origin only:", o: ["Translation", "Rotation", "Scaling", "Reflection"], a: 0, e: "Translasi." },
+    { q: "Bilinear interpolation estimates within:", o: ["Line", "Grid cell", "Triangle", "Time"], a: 1, e: "Grid persegi." },
+    { q: "Multipath in GNSS:", o: ["Constellations", "Reflected signals", "Software", "Jamming"], a: 1, e: "Sinyal memantul." },
+    { q: "Total Station measures:", o: ["Angles", "Distances", "Both", "Gravity"], a: 2, e: "Sudut dan Jarak." },
+    { q: "Accelerometers in 6-DOF IMU?", o: ["1", "2", "3", "6"], a: 2, e: "3 (X, Y, Z)." },
+    { q: "IHO Order 1a is for:", o: ["Critical clearance", "Deep", "General", "No ships"], a: 0, e: "Area dangkal berbahaya." },
+    { q: "Inverse of Matrix A:", o: ["Transpose", "Produces Identity", "Square", "Zero"], a: 1, e: "A * A' = I." },
+    { q: "Random Error example:", o: ["Calib tape", "Curvature", "Wind on staff", "Typo"], a: 2, e: "Fluktuasi angin." },
+    { q: "Bilinear uses how many points?", o: ["2", "3", "4", "8"], a: 2, e: "4 titik grid." },
+    { q: "Atmospheric Refraction effect:", o: ["Shorter", "Bends line of sight", "Color", "None"], a: 1, e: "Pembiasan cahaya." },
+    { q: "Histogram of survey errors:", o: ["Linear", "Bell-shaped", "Square", "Random"], a: 1, e: "Distribusi Normal." },
+    { q: "Trigonometric Levelling uses:", o: ["Pressure", "Angles and distances", "GNSS", "Level"], a: 1, e: "Hitung tinggi via sudut." },
+    { q: "Phase Center Offset (PCO) for:", o: ["GNSS Antenna", "Transducer", "Laser", "Compass"], a: 0, e: "Pusat elektronik antena." },
+    { q: "Kalman Filter integration:", o: ["Hull", "Weather", "GNSS and INS", "Tide"], a: 2, e: "Optimal sensor fusion." },
 
-    // 25 ESSAY QUESTIONS
-    { type: "essay", q: "Explain why 'one measure is not a measure' in geodetic surveying.", e: "Every measurement contains errors and the true value is never known. A single measurement cannot detect gross errors or mistakes. By repeating measurements (redundancy), we can compare results, compute mean and standard deviation, and ensure reliability." },
-    { type: "essay", q: "Explain the difference between precision and reliability.", e: "Precision is the closeness of repeated measurements to each other (low spread). Reliability is the ability of a system to detect errors through redundancy. Quality is the combination of both." },
-    { type: "essay", q: "Explain the concept of error propagation.", e: "When uncertain measurements are used to calculate derived values (like computing Area from Width and Length), the uncertainty of the inputs transfers to the final result, often growing in magnitude." },
-    { type: "essay", q: "Explain the least squares method and its purpose.", e: "It is a mathematical adjustment that minimizes the sum of the squares of residuals. It provides the most consistent estimate for unknowns in a system with redundant data." },
-    { type: "essay", q: "Explain what is meant by a reference ellipsoid.", e: "It is a mathematical oblate spheroid that approximates the Earth's shape. It provides a simple surface for performing geodetic calculations instead of using the complex real Earth." },
-    { type: "essay", q: "Explain the difference between geoid and ellipsoid.", e: "The geoid is a physical gravity-based surface (Mean Sea Level). The ellipsoid is a smooth mathematical model. The geoid is irregular due to mass distribution, while the ellipsoid is uniform." },
-    { type: "essay", q: "Explain what a Coordinate Reference System (CRS) is.", e: "CRS is a theoretical abstract framework that defines the parameters (datum, ellipsoid, units) for coordinate measurement." },
-    { type: "essay", q: "Explain what a Coordinate Reference Frame (CRF) is.", e: "CRF is the practical realization of a CRS, consisting of actual coordinates assigned to a network of physical benchmarks." },
-    { type: "essay", q: "Explain what 4D coordinates mean in modern geodesy.", e: "It includes 3D position (Lat, Lon, Height) plus Time. Time is essential because the Earth's crust moves due to tectonic activities." },
-    { type: "essay", q: "Explain the purpose of map projection.", e: "Since the Earth is curved and paper/screens are flat, projection is the mathematical transformation used to represent geographic coordinates on a flat plane." },
-    { type: "essay", q: "Explain distortion in map projections.", e: "Distortion is the inevitable warping of shapes, areas, or distances that occurs when flattening a sphere. It is usually smallest at the point of contact and grows away from it." },
-    { type: "essay", q: "Explain the UTM projection system.", e: "Universal Transverse Mercator divides the globe into 60 zones. It is a conformal cylindrical projection used to minimize distortion in local mapping." },
-    { type: "essay", q: "Explain the difference between geocentric and geodetic coordinates.", e: "Geocentric coordinates (X,Y,Z) use a 3D Cartesian system from Earth's center. Geodetic coordinates (Lat, Lon, h) use angles and ellipsoidal height." },
-    { type: "essay", q: "Explain the concept of CIS and CTS.", e: "CIS (Conventional Inertial System) is space-fixed (for satellite orbits). CTS (Conventional Terrestrial System) is Earth-fixed and rotates with the planet." },
-    { type: "essay", q: "Explain orthometric height computation using GNSS.", e: "H = h - N. One takes the ellipsoidal height (h) from GNSS and subtracts the geoid undulation (N) from a gravity model to get the height above sea level (H)." },
-    { type: "essay", q: "Explain Total Vertical Uncertainty (TVU).", e: "TVU represents the depth uncertainty at a 95% confidence level, combining fixed errors (a) and depth-dependent errors (b*d)." },
-    { type: "essay", q: "Explain why sound speed affects depth measurement.", e: "Sonar measures time. Depth = (Speed * Time) / 2. If the speed of sound is inaccurate, the depth calculation will be scaled incorrectly." },
-    { type: "essay", q: "Explain vessel motion errors in hydrographic survey.", e: "Roll, Pitch, and Heave change the sonar transducer's orientation and position. If not corrected, they cause false 'artifacts' on the seafloor map." },
-    { type: "essay", q: "Explain the principle of Inertial Navigation System (INS).", e: "It uses an IMU to measure acceleration and rotation. By integrating these over time, it tracks position from a known starting point without external signals." },
-    { type: "essay", q: "Explain GNSS aiding of INS.", e: "GNSS provides an external absolute reference. A Kalman filter uses GNSS data to periodically correct the drift and bias errors inherent in the INS." },
-    { type: "essay", q: "Explain the classification of plane and geodetic surveying.", e: "Plane surveying treats the Earth as flat (small areas). Geodetic surveying accounts for Earth's curvature (large areas/global)." },
-    { type: "essay", q: "Explain the importance of ITRF epochs.", e: "Since tectonic plates move several cm/year, a coordinate is only meaningful if we know the 'Epoch' (date) it was recorded." },
-    { type: "essay", q: "Explain why map projection is necessary in hydrography.", e: "Navigators need flat charts for planning. Projection converts curved coordinates into planar Eastings/Northings for drawing maps." },
-    { type: "essay", q: "Explain the role of redundancy in survey adjustment.", e: "Redundancy provides the 'extra' data needed to check for blunders, calculate statistical reliability, and improve accuracy through adjustment." },
-    { type: "essay", q: "Explain why vertical datum errors are critical in hydrographic surveying.", e: "Depths must be referenced to a Chart Datum (usually low water). Errors here can lead to ships grounding if the depth is overestimated." }
+    // --- 25 ESSAYS (Ditambahkan Sesuai Permintaan) ---
+    { q: "Explain the difference between Accuracy and Precision.", type: "essay", e: "Precision means all your measurements are very close to each other (consistent). Accuracy means your measurements are very close to the true value (correct). You can be precise but not accurate if you have a systematic error." },
+    { q: "What is a Geoid and why is it important for surveyors?", type: "essay", e: "The Geoid is the shape of the Earth based on gravity. It is like the level of the ocean if it covered the whole world. It is important because we use it to measure heights above sea level (Orthometric height)." },
+    { q: "Describe the purpose of a Map Projection.", type: "essay", e: "The Earth is round like a ball, but a map is flat. A map projection is a way to put the round Earth onto a flat paper. This always causes some changes (distortions) in size, shape, or distance." },
+    { q: "Why do we use the Least Squares method in surveying?", type: "essay", e: "We often have more measurements than we need (redundancy). The Least Squares method helps us find the best single answer by making the total error as small as possible." },
+    { q: "What is the main difference between WGS84 and a local datum?", type: "essay", e: "WGS84 is a global system for the whole world and uses the center of the Earth as its start point. A local datum is made to fit only one specific area or country very well." },
+    { q: "Explain how GNSS RTK works in simple terms.", type: "essay", e: "RTK uses two receivers. One is at a known 'Base' and one is moving (Rover). The Base sends corrections to the Rover using a radio. This helps the Rover get cm-level accuracy very fast." },
+    { q: "What is 'Heave' and how does it affect bathymetry?", type: "essay", e: "Heave is the up and down movement of a ship because of waves. If we don't fix it, the sea floor will look wavy in our data. We use a motion sensor to remove this movement." },
+    { q: "What are the three segments of GPS?", type: "essay", e: "1. Space Segment (the satellites), 2. Control Segment (ground stations), and 3. User Segment (our receivers like phones or survey tools)." },
+    { q: "What is a 'Rhumb Line'?", type: "essay", e: "A Rhumb Line is a path that has a constant compass direction. It is easy for sailors to follow, but it is not the shortest path between two points." },
+    { q: "Explain the term 'Ellipsoidal Height'.", type: "essay", e: "It is the height measured from a mathematical ellipsoid surface. GNSS gives us this height (h). It is different from the height above sea level (H)." },
+    { q: "What is 'Multipath' error in GPS?", type: "essay", e: "It happens when the GPS signal hits a building or a ship's crane before it reaches the antenna. This makes the signal arrive late and causes a position error." },
+    { q: "Why is 'Sound Velocity' important in hydrographic surveys?", type: "essay", e: "Echo sounders measure time to calculate depth. If we don't know the correct speed of sound in water, the depth calculation will be wrong." },
+    { q: "Describe 'Differential Levelling'.", type: "essay", e: "It is a way to find the height difference between two points. We use a level instrument and a graduated staff. We subtract the foresight from the backsight." },
+    { q: "What is the 'Jacobian Matrix' used for?", type: "essay", e: "It is a matrix of partial derivatives. We use it to linearize non-linear observation equations and for the propagation of uncertainties in Least Squares." },
+    { q: "What is the UTM coordinate system?", type: "essay", e: "UTM is a global grid system that divides the Earth into 60 zones. It uses a Transverse Mercator projection to provide high accuracy for mapping in each zone." },
+    { q: "Explain the role of an IMU in INS.", type: "essay", e: "An IMU (Inertial Measurement Unit) uses accelerometers and gyroscopes to measure movement and rotation. It allows the system to calculate position using dead reckoning." },
+    { q: "What is 'Spherical Excess'?", type: "essay", e: "It is the amount by which the sum of the angles of a spherical triangle exceeds 180 degrees. This is caused by the Earth's curvature." },
+    { q: "What is a 'Blunder' in surveying?", type: "essay", e: "A blunder is a gross error caused by human mistake, like misreading a staff or typing the wrong number. It must be removed before processing." },
+    { q: "How does the Normal Distribution relate to survey errors?", type: "essay", e: "It assumes that small random errors happen more often than large ones, and positive/negative errors are equally likely, forming a bell curve." },
+    { q: "What is a 'Reference Ellipsoid'?", type: "essay", e: "It is a mathematical model of the Earth's shape (an oblate spheroid) used as a smooth surface for calculating geographic coordinates (Lat, Lon)." },
+    { q: "Why is Tide Correction necessary?", type: "essay", e: "Because the water level changes with the tide. To make a consistent map, we must reduce all soundings to a fixed level called Chart Datum." },
+    { q: "Define sensor 'Calibration'.", type: "essay", e: "Calibration is the process of checking and adjusting an instrument against a standard to ensure its measurements are accurate and free of systematic bias." },
+    { q: "What is the 'Semi-major axis' (a)?", type: "essay", e: "The semi-major axis is the longest radius of the reference ellipsoid, representing the distance from the Earth's center to the Equator." },
+    { q: "What is 'Interpolation'?", type: "essay", e: "Interpolation is a mathematical method to estimate unknown values at specific locations based on the known values of surrounding data points." },
+    { q: "What is 'DOP' and how does it affect GNSS?", type: "essay", e: "DOP (Dilution of Precision) describes the geometry of the satellites. Low DOP means satellites are well-spread, resulting in better positioning accuracy." }
 ];
 
 let currentUser = "";
+let currentRole = "";
 let userAns = {};
+let isAdmin = false;
 let timerInterval;
 let startTime;
 
-// --- CORE FUNCTIONS ---
-
 function login() {
-    let n = document.getElementById('candidateName').value;
-    let p = document.getElementById('candidatePass').value;
-    if(USERS[n] && USERS[n].pass === p) {
-        currentUser = n;
+    let name = document.getElementById('candidateName').value.trim();
+    let pass = document.getElementById('candidatePass').value.trim();
+    if(USERS[name] && USERS[name].pass === pass) {
+        currentUser = name;
+        currentRole = USERS[name].role;
+        isAdmin = (currentRole === "Admin");
         document.getElementById('startScreen').classList.add('hidden');
         document.getElementById('menuScreen').classList.remove('hidden');
-        document.getElementById('userDisplay').innerText = `User: ${n}`;
-        let rb = document.getElementById('roleBadge');
-        rb.innerHTML = `<span class="badge" style="background:${USERS[n].role==='Admin'?'var(--admin-color)':'var(--teal)'}">${USERS[n].role}</span>`;
-        if(USERS[n].role === 'Admin') document.getElementById('adminCol').classList.remove('hidden');
+        const badge = document.getElementById('roleBadge');
+        badge.innerText = currentRole.toUpperCase();
+        badge.style.background = isAdmin ? "var(--admin-color)" : "var(--teal)";
+        badge.style.color = "white";
+        document.getElementById('userDisplay').innerHTML = `Candidate: <strong>${currentUser}</strong>`;
+        if(isAdmin) {
+            document.getElementById('adminTools').classList.remove('hidden');
+            document.getElementById('adminCol').classList.remove('hidden');
+        }
         refreshHistory();
-    } else { alert("Login Failed."); }
+    } else { alert("Access Denied."); }
+}
+
+function handleModuleClick() {
+    if(isAdmin) {
+        if(confirm("Admin Mode: View MASTER KEY?")) showMasterKey();
+        else startExam();
+    } else startExam();
 }
 
 function startExam() {
     userAns = {};
     document.getElementById('menuScreen').classList.add('hidden');
     document.getElementById('examScreen').classList.remove('hidden');
-    document.getElementById('infoUser').innerText = `Candidate: ${currentUser}`;
     renderQuestions();
     renderNav();
     startTime = Date.now();
-    timerInterval = setInterval(updateTimer, 1000);
-}
-
-function updateTimer() {
-    let diff = Math.floor((Date.now() - startTime) / 1000);
-    let m = Math.floor(diff/60).toString().padStart(2,'0');
-    let s = (diff%60).toString().padStart(2,'0');
-    document.getElementById('timerDisplay').innerText = `${m}:${s}`;
+    timerInterval = setInterval(() => {
+        let diff = Math.floor((Date.now() - startTime) / 1000);
+        let m = Math.floor(diff/60).toString().padStart(2,'0');
+        let s = (diff%60).toString().padStart(2,'0');
+        document.getElementById('timerDisplay').innerText = `${m}:${s}`;
+    }, 1000);
 }
 
 function renderQuestions() {
     const box = document.getElementById('qBox');
     box.innerHTML = BANK.map((q, i) => {
-        let content = "";
+        let inputArea = "";
+        const badge = q.type === 'essay' ? '<span class="badge-essay">ESSAY</span>' : '<span class="badge-mcq">MCQ</span>';
+        
         if(q.type === 'essay') {
-            content = `<textarea oninput="saveAns(${i}, this.value)" placeholder="Type your explanation here...">${userAns[i] || ''}</textarea>`;
+            inputArea = `<textarea placeholder="Type your answer..." oninput="saveEssay(${i}, this.value)">${userAns[i] || ""}</textarea>`;
         } else {
-            const lbl = ['A','B','C','D'];
-            content = q.o.map((o, oi) => `
-                <div class="option ${userAns[i] === oi ? 'selected' : ''}" onclick="saveAns(${i}, ${oi})">
-                    <strong>${lbl[oi]}.</strong> ${o}
+            const lbl = ['A', 'B', 'C', 'D'];
+            inputArea = q.o.map((text, oi) => `
+                <div class="option ${userAns[i] === oi ? 'selected' : ''}" onclick="saveMCQ(${i}, ${oi})">
+                    <strong>${lbl[oi]}.</strong> ${text}
                 </div>
             `).join('');
         }
+
         return `
             <div class="card" id="q_${i}">
-                <div style="margin-bottom:10px;">
-                    <span class="badge ${q.type==='essay'?'badge-essay':'badge-mcq'}">${q.type==='essay'?'Essay':'MCQ'}</span>
-                    <strong>Question ${i+1}</strong>
-                </div>
+                <p><strong>Question ${i+1}</strong> ${badge}</p>
                 <p>${q.q}</p>
-                ${content}
-            </div>`;
+                ${inputArea}
+            </div>
+        `;
     }).join('');
 }
 
-function saveAns(i, v) {
-    userAns[i] = v;
+function saveMCQ(idx, val) {
+    userAns[idx] = val;
     renderNav();
-    if(BANK[i].type !== 'essay') renderQuestions();
+    renderQuestions();
+}
+
+function saveEssay(idx, text) {
+    userAns[idx] = text;
+    renderNav();
 }
 
 function renderNav() {
-    document.getElementById('navGrid').innerHTML = BANK.map((_, i) => `
-        <div class="nav-btn ${userAns.hasOwnProperty(i) && userAns[i] !== "" ? 'answered' : ''}" 
-             onclick="document.getElementById('q_${i}').scrollIntoView({behavior:'smooth', block:'center'})">${i+1}</div>
-    `).join('');
-}
-
-function submitExam() {
-    if(!confirm("Submit exam?")) return;
-    clearInterval(timerInterval);
-    let mcqCorrect = 0;
-    BANK.filter(q => !q.type).forEach((q, i) => { if(userAns[i] === q.a) mcqCorrect++; });
-    let pct = Math.round(mcqCorrect / 50 * 100);
-    saveRecord(pct);
-    showReview(pct, `MCQ Score: ${mcqCorrect}/50`);
-}
-
-function showReview(pct, info) {
-    document.getElementById('examScreen').classList.add('hidden');
-    document.getElementById('resultScreen').classList.remove('hidden');
-    document.getElementById('resScore').innerText = pct + "%";
-    document.getElementById('resInfo').innerText = info;
-
-    document.getElementById('reviewBox').innerHTML = BANK.map((q, i) => {
-        let body = "";
-        if(q.type === 'essay') {
-            body = `<div style="background:#fff3e0; padding:10px; border-radius:5px; margin-bottom:10px;"><strong>Your Response:</strong><br>${userAns[i] || '<i>No answer</i>'}</div>`;
-        } else {
-            const lbl = ['A','B','C','D'];
-            body = q.o.map((o, oi) => {
-                let cls = (oi === q.a) ? 'correct-view' : (userAns[i] === oi ? 'wrong-view' : '');
-                return `<div class="option ${cls}"><strong>${lbl[oi]}.</strong> ${o} ${oi === q.a ? '✓' : ''}</div>`;
-            }).join('');
-        }
-        return `
-            <div class="card">
-                <p><strong>${i+1}. ${q.q}</strong></p>
-                ${body}
-                <div class="explanation-box">
-                    <strong><i class="fas fa-lightbulb"></i> Discussion & Explanation:</strong><br>${q.e}
-                </div>
-            </div>`;
+    document.getElementById('navGrid').innerHTML = BANK.map((_, i) => {
+        const isAnswered = userAns.hasOwnProperty(i) && (typeof userAns[i] === 'number' || userAns[i].trim().length > 0);
+        return `<div class="nav-btn ${isAnswered ? 'answered' : ''}" onclick="document.getElementById('q_${i}').scrollIntoView({behavior:'smooth', block:'center'})">${i+1}</div>`;
     }).join('');
 }
 
-// --- DATA PERSISTENCE ---
+function submitExam() {
+    if(!confirm("Submit results?")) return;
+    clearInterval(timerInterval);
+    
+    let mcqScore = 0;
+    let essayAttempted = 0;
+    
+    BANK.forEach((q, i) => {
+        if(q.type === 'essay') {
+            if(userAns[i] && userAns[i].trim().length > 10) essayAttempted++;
+        } else {
+            if(userAns[i] === q.a) mcqScore++;
+        }
+    });
+
+    const totalPossible = BANK.length;
+    const finalScore = Math.round(((mcqScore + essayAttempted) / totalPossible) * 100);
+    
+    saveRecord(finalScore);
+    showResult(finalScore, `MCQ: ${mcqScore}/50 | Essay Attempted: ${essayAttempted}/25`);
+}
+
+function showResult(pct, info) {
+    document.getElementById('examScreen').classList.add('hidden');
+    document.getElementById('resultScreen').classList.remove('hidden');
+    document.getElementById('resScore').innerText = (pct === "KEY" ? "KEY" : pct + "%");
+    document.getElementById('resInfo').innerText = info;
+    
+    const lbl = ['A', 'B', 'C', 'D'];
+    document.getElementById('reviewBox').innerHTML = BANK.map((q, i) => {
+        if(q.type === 'essay') {
+            return `
+                <div class="card">
+                    <p><strong>${i+1}. ${q.q}</strong> <span class="badge-essay">ESSAY</span></p>
+                    <div class="user-essay-box"><strong>Your Answer:</strong><br>${userAns[i] || "(No answer)"}</div>
+                    <div class="model-answer-box"><strong>Model Answer:</strong><br>${q.e}</div>
+                </div>
+            `;
+        } else {
+            let opts = q.o.map((text, oi) => {
+                let cls = (oi === q.a) ? 'correct-view' : (userAns[i] === oi ? 'wrong-view' : '');
+                return `<div class="option ${cls}"><strong>${lbl[oi]}.</strong> ${text} ${oi === q.a ? '✓' : ''}</div>`;
+            }).join('');
+            return `
+                <div class="card">
+                    <p><strong>${i+1}. ${q.q}</strong> <span class="badge-mcq">MCQ</span></p>
+                    ${opts}
+                    <div class="explanation-box"><strong>Explanation:</strong><br>${q.e}</div>
+                </div>
+            `;
+        }
+    }).join('');
+}
+
+function showMasterKey() {
+    userAns = {};
+    showResult("KEY", "Displaying Master Key for PG01");
+}
 
 function saveRecord(s) {
-    let db = JSON.parse(localStorage.getItem('krisna_pg01_final') || '[]');
-    db.push({n: currentUser, s: s, d: new Date().toLocaleString()});
-    localStorage.setItem('krisna_pg01_final', JSON.stringify(db));
+    let data = JSON.parse(localStorage.getItem('krisna_pg01_db') || '[]');
+    data.push({n: currentUser, s: s, d: new Date().toLocaleString()});
+    localStorage.setItem('krisna_pg01_db', JSON.stringify(data));
 }
 
 function refreshHistory() {
-    let db = JSON.parse(localStorage.getItem('krisna_pg01_final') || '[]');
-    let html = db.reverse().map((r, i) => `
+    let data = JSON.parse(localStorage.getItem('krisna_pg01_db') || '[]');
+    document.getElementById('histBody').innerHTML = data.reverse().map((h, i) => `
         <tr>
-            <td style="padding:10px; border-bottom:1px solid #eee;">${r.n}</td>
-            <td style="padding:10px; border-bottom:1px solid #eee;"><strong>${r.s}%</strong></td>
-            <td style="padding:10px; border-bottom:1px solid #eee;"><small>${r.d}</small></td>
-            <td class="${USERS[currentUser].role==='Admin'?'':'hidden'}" style="text-align:center; border-bottom:1px solid #eee;">
-                <button onclick="delRec(${db.length-1-i})" style="background:none; color:red; width:auto; padding:0;"><i class="fas fa-trash"></i></button>
+            <td style="padding:10px; border-bottom:1px solid #eee;">${h.n}</td>
+            <td style="padding:10px; border-bottom:1px solid #eee;"><strong>${h.s}%</strong></td>
+            <td style="padding:10px; border-bottom:1px solid #eee;"><small>${h.d}</small></td>
+            <td class="${isAdmin?'':'hidden'}" style="text-align:center; border-bottom:1px solid #eee;">
+                <button onclick="deleteSingle(${data.length-1-i})" style="background:none; color:red; width:auto; padding:0;"><i class="fas fa-trash"></i></button>
             </td>
-        </tr>`).join('');
-    document.getElementById('histBody').innerHTML = html || '<tr><td colspan="4" style="text-align:center; padding:20px;">No records.</td></tr>';
+        </tr>
+    `).join('') || '<tr><td colspan="4" style="text-align:center; padding:20px; color:#999;">No history.</td></tr>';
 }
 
-function delRec(i) {
-    let db = JSON.parse(localStorage.getItem('krisna_pg01_final') || '[]');
-    db.splice(i, 1);
-    localStorage.setItem('krisna_pg01_final', JSON.stringify(db));
+function deleteSingle(i) {
+    let data = JSON.parse(localStorage.getItem('krisna_pg01_db') || '[]');
+    data.splice(i, 1);
+    localStorage.setItem('krisna_pg01_db', JSON.stringify(data));
     refreshHistory();
 }
 
-function exitExam() { if(confirm("Discard exam?")) location.reload(); }
-
+function clearAllData() { if(confirm("Wipe all?")) { localStorage.removeItem('krisna_pg01_db'); refreshHistory(); } }
+function exportCSV() {
+    let data = JSON.parse(localStorage.getItem('krisna_pg01_db') || '[]');
+    let csv = "Candidate,Score,Date\n" + data.map(h => `"${h.n}",${h.s},"${h.d}"`).join('\n');
+    let a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+    a.download = 'PG01_Results.csv';
+    a.click();
+}
+function exitExam() { if(confirm("Cancel?")) location.reload(); }
 </script>
 </body>
 </html>
