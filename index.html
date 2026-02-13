@@ -152,7 +152,7 @@ body.dark-mode {
   <div class="header-inner">
     <div style="display:flex; align-items:center; gap:10px;">
         <i class="fas fa-globe-asia" style="color:var(--teal); font-size:1.5rem;"></i>
-        <h1>Krisna Exam System <small style="font-size:0.6rem; opacity:0.7;">PG01 GEODESY</small></h1>
+        <h1>Krisna Exam System <small style="font-size:0.6rem; opacity:0.7;">PG01 COMPREHENSIVE</small></h1>
     </div>
     <div style="display: flex; align-items: center; gap: 10px;">
         <div id="userDisplay" style="font-weight:bold; color:var(--muted);"></div>
@@ -164,7 +164,6 @@ body.dark-mode {
 </header>
 
 <div class="container">
-  <!-- Start Screen -->
   <div id="startScreen" class="card" style="max-width:400px; margin: 60px auto; text-align:center;">
     <h2 style="color:var(--teal)">Secure Access</h2>
     <p style="font-size:0.8rem; color:var(--muted);">PG01 GEODESY FINAL</p>
@@ -173,12 +172,11 @@ body.dark-mode {
     <button onclick="login()">ENTER SYSTEM <i class="fas fa-sign-in-alt"></i></button>
     <div style="margin-top: 20px; padding: 15px; background: var(--info-bg); border-radius: 5px; font-size: 0.8rem; text-align: left;">
         <strong><i class="fas fa-info-circle"></i> Test Credentials:</strong><br>
-        Student: Sena / *********<br>
-        Admin: Krisna / *********
+        Student: ***** / *****<br>
+        Admin: ***** / *****
     </div>
   </div>
 
-  <!-- Menu Screen -->
   <div id="menuScreen" class="hidden">
     <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
@@ -197,7 +195,6 @@ body.dark-mode {
             </div>
         </button>
 
-        <!-- Statistics Overview -->
         <div style="margin-top: 20px;">
             <h4>Your Performance Summary</h4>
             <div class="stats-grid">
@@ -231,7 +228,6 @@ body.dark-mode {
             </div>
         </div>
 
-        <!-- Filter Bar -->
         <div class="filter-bar">
             <input type="text" id="searchHistory" class="search-box" placeholder="🔍 Search by name..." oninput="filterHistory()">
             <button class="filter-btn active" onclick="sortHistory('date')">Sort by Date</button>
@@ -253,14 +249,12 @@ body.dark-mode {
     </div>
   </div>
 
-  <!-- Exam Screen -->
   <div id="examScreen" class="exam-grid hidden">
     <aside class="sidebar-left">
         <h3>Details</h3>
         <p id="displayUser" style="font-size:0.8rem; color:var(--muted);"></p>
         <div class="timer-box" id="timerDisplay">00:00</div>
         
-        <!-- Progress Section -->
         <div style="margin: 15px 0;">
             <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted); margin-bottom: 5px;">
                 <span>Progress</span>
@@ -271,7 +265,6 @@ body.dark-mode {
             </div>
         </div>
 
-        <!-- Stats -->
         <div class="stats-grid">
             <div class="stat-box">
                 <div class="stat-label">MCQ</div>
@@ -283,7 +276,6 @@ body.dark-mode {
             </div>
         </div>
 
-        <!-- Keyboard Shortcuts -->
         <div class="shortcut-hint">
             <strong>💡 Shortcuts:</strong><br>
             <kbd>Ctrl</kbd>+<kbd>S</kbd> Save Draft<br>
@@ -313,7 +305,6 @@ body.dark-mode {
     </aside>
   </div>
 
-  <!-- Result Screen -->
   <div id="resultScreen" class="hidden card">
     <div style="text-align:center; padding:20px;">
         <h2>Assessment Summary</h2>
@@ -330,7 +321,6 @@ body.dark-mode {
     </div>
     <hr>
     
-    <!-- Filter for Review -->
     <div style="padding: 10px;">
         <h3>Review & Master Key</h3>
         <div class="filter-bar">
@@ -345,7 +335,6 @@ body.dark-mode {
   </div>
 </div>
 
-<!-- Auto-save Indicator -->
 <div class="autosave-indicator" id="autosaveIndicator">
     <i class="fas fa-check-circle" style="color: var(--correct);"></i>
     <span>Draft saved</span>
@@ -359,84 +348,98 @@ const USERS = {
 };
 
 const BANK = [
-    // --- 50 MCQs ---
-    { q: "In linear algebra, what is the result of the dot product of two orthogonal vectors?", o: ["1", "-1", "0", "Infinity"], a: 2, e: "Dua vektor ortogonal memiliki dot product nol." },
-    { q: "Which matrix property must be satisfied for Ax = B to have a unique solution?", o: ["Det = 0", "Det != 0", "A is row vector", "A is singular"], a: 1, e: "Determinan tidak boleh nol agar matriks memiliki invers." },
-    { q: "In 2D coordinate transformation, which functions are used in the rotation matrix?", o: ["Sine and Cosine", "Tan and Cotan", "Sec and Cosec", "Only Sine"], a: 0, e: "Rotasi menggunakan sin dan cos." },
-    { q: "The 'Taylor Series' is used in geodesy primarily for:", o: ["Distance", "Linearization", "Weight", "Shape"], a: 1, e: "Taylor Series melinearisasi persamaan non-linier." },
-    { q: "A 'Great Circle' on a sphere represents:", o: ["Constant bearing", "Small circle", "Shortest distance", "Rhumb line"], a: 2, e: "Great circle adalah jalur terpendek (geodesic)." },
-    { q: "What happens to the sum of angles in a spherical triangle?", o: ["= 180°", "> 180°", "< 180°", "Variable"], a: 1, e: "Jumlah sudut segitiga bola selalu > 180°." },
-    { q: "In statistics, the 'Standard Deviation' is a measure of:", o: ["Accuracy", "Precision", "Bias", "Systematic"], a: 1, e: "Mengukur sebaran (presisi)." },
-    { q: "Percentage of data within ±1 sigma in Normal Distribution?", o: ["50%", "68%", "95%", "99%"], a: 1, e: "68.3% berada di dalam 1 sigma." },
-    { q: "Principle of 'Least Squares' minimizes:", o: ["Sum of residuals", "Sum of squares of residuals", "Max error", "Average"], a: 1, e: "Meminimalkan jumlah kuadrat sisaan." },
-    { q: "Measurement with high variance will have:", o: ["High weight", "Low weight", "No weight", "Same weight"], a: 1, e: "Bobot = 1/variansi." },
-    { q: "Interpolation using piecewise polynomials:", o: ["Linear", "Nearest", "Cubic Splines", "IDW"], a: 2, e: "Splines membuat kurva halus." },
-    { q: "The 'Geoid' is best defined as:", o: ["Ellipsoid", "Equipotential surface", "Land surface", "Mountain height"], a: 1, e: "Permukaan gravitasi konstan." },
-    { q: "Reference for 'Orthometric Heights'?", o: ["Ellipsoid", "Geoid", "Terrain", "Topography"], a: 1, e: "Tinggi ortometrik diukur dari geoid." },
-    { q: "A 'Loxodrome' crosses meridians at:", o: ["Same angle", "Shortest path", "Straight line", "Connects poles"], a: 0, e: "Sudut konstan (Rhumb line)." },
-    { q: "System that rotates with the Earth:", o: ["CIS", "CTS", "Celestial", "Local"], a: 1, e: "CTS (Conventional Terrestrial System)." },
-    { q: "Shape defined by a and f:", o: ["Sphere", "Oblate Spheroid", "Geoid", "Prolate"], a: 1, e: "Ellipsoid pepat." },
-    { q: "Map Projection always has distortion EXCEPT:", o: ["Shape", "Area", "Distance", "None"], a: 3, e: "Semua proyeksi pasti ada distorsi." },
-    { q: "Mercator is used in navigation because:", o: ["Equal-area", "Conformal", "Equidistant", "Gnomonic"], a: 1, e: "Mempertahankan sudut (konformal)." },
-    { q: "Number of UTM zones?", o: ["30", "60", "90", "180"], a: 1, e: "60 zona (6 derajat)." },
-    { q: "GNSS segment for maintaining orbits?", o: ["Space", "Control", "User", "Satellite"], a: 1, e: "Control segment." },
-    { q: "Pseudorange is based on:", o: ["Phase", "Time travel of code", "Doppler", "Pressure"], a: 1, e: "Waktu tempuh sinyal kode." },
-    { q: "RTK stands for:", o: ["Kinetography", "Real-Time Kinematic", "Relative", "Remote"], a: 1, e: "Real-Time Kinematic." },
-    { q: "Better geometry is indicated by DOP:", o: ["1.2", "5.0", "10.0", "20.0"], a: 0, e: "Semakin kecil DOP semakin baik." },
-    { q: "In hydrography, 'Heave' is:", o: ["Vertical motion", "Roll", "Pitch", "Drift"], a: 0, e: "Gerak naik-turun kapal." },
-    { q: "Tool for acceleration and angular velocity:", o: ["GNSS", "Echo", "IMU", "Magnetometer"], a: 2, e: "IMU (Inertial Measurement Unit)." },
-    { q: "Height measured directly by GNSS?", o: ["H", "h", "N", "Dynamic"], a: 1, e: "Tinggi ellipsoidal (h)." },
-    { q: "Collimation error in levelling:", o: ["Line of sight not horizontal", "Staff not vertical", "Curvature", "Sun"], a: 0, e: "Teropong tidak mendatar." },
-    { q: "Standard vertical datum for soundings:", o: ["MSL", "HAT", "Chart Datum", "Ellipsoid"], a: 2, e: "Chart Datum (LAT)." },
-    { q: "'Dead Reckoning' is in:", o: ["GNSS", "INS", "Tide", "Map"], a: 1, e: "Inertial Navigation." },
-    { q: "Cause of 'Drift' in INS:", o: ["Blockage", "Accumulated sensor errors", "Temp", "Battery"], a: 1, e: "Integrasi error sensor." },
-    { q: "Origin of WGS84?", o: ["Greenwich", "Pole", "Earth Center of Mass", "Equator"], a: 2, e: "Geosentris." },
-    { q: "Jacobian Matrix is for:", o: ["Mean", "Propagation of uncertainty", "Observations", "Contours"], a: 1, e: "Turunan parsial untuk rambat kesalahan." },
-    { q: "Error removed by procedure:", o: ["Random", "Systematic", "Blunder", "None"], a: 1, e: "Sistematik." },
-    { q: "Centimeter accuracy in real-time:", o: ["DGPS", "Standalone", "RTK", "LORAN"], a: 2, e: "RTK." },
-    { q: "Ellipsoid - Geoid distance:", o: ["Deflection", "Geoid Undulation (N)", "Correction", "Sigma"], a: 1, e: "N = h - H." },
-    { q: "A x B = B x A?", o: ["Yes", "No", "Identity", "1x1"], a: 1, e: "Tidak komutatif." },
-    { q: "Moving the origin only:", o: ["Translation", "Rotation", "Scaling", "Reflection"], a: 0, e: "Translasi." },
-    { q: "Bilinear interpolation estimates within:", o: ["Line", "Grid cell", "Triangle", "Time"], a: 1, e: "Grid persegi." },
-    { q: "Multipath in GNSS:", o: ["Constellations", "Reflected signals", "Software", "Jamming"], a: 1, e: "Sinyal memantul." },
-    { q: "Total Station measures:", o: ["Angles", "Distances", "Both", "Gravity"], a: 2, e: "Sudut dan Jarak." },
-    { q: "Accelerometers in 6-DOF IMU?", o: ["1", "2", "3", "6"], a: 2, e: "3 (X, Y, Z)." },
-    { q: "IHO Order 1a is for:", o: ["Critical clearance", "Deep", "General", "No ships"], a: 0, e: "Area dangkal berbahaya." },
-    { q: "Inverse of Matrix A:", o: ["Transpose", "Produces Identity", "Square", "Zero"], a: 1, e: "A * A' = I." },
-    { q: "Random Error example:", o: ["Calib tape", "Curvature", "Wind on staff", "Typo"], a: 2, e: "Fluktuasi angin." },
-    { q: "Bilinear uses how many points?", o: ["2", "3", "4", "8"], a: 2, e: "4 titik grid." },
-    { q: "Atmospheric Refraction effect:", o: ["Shorter", "Bends line of sight", "Color", "None"], a: 1, e: "Pembiasan cahaya." },
-    { q: "Histogram of survey errors:", o: ["Linear", "Bell-shaped", "Square", "Random"], a: 1, e: "Distribusi Normal." },
-    { q: "Trigonometric Levelling uses:", o: ["Pressure", "Angles and distances", "GNSS", "Level"], a: 1, e: "Hitung tinggi via sudut." },
-    { q: "Phase Center Offset (PCO) for:", o: ["GNSS Antenna", "Transducer", "Laser", "Compass"], a: 0, e: "Pusat elektronik antena." },
-    { q: "Kalman Filter integration:", o: ["Hull", "Weather", "GNSS and INS", "Tide"], a: 2, e: "Optimal sensor fusion." },
+    // Section 1: Linear Algebra & Analytical Geometry
+    { q: "In a vector space R<sup>n</sup>, what is the specific term for a vector (0, 0, ..., 0) having n zero components?", o: ["Null Unit", "Zero Vector", "Identity Vector", "Negative Vector"], a: 1, e: "The source defines the zero vector of R<sup>n</sup> as a vector where all n components are zero, denoted as 0." },
+    { q: "Which property of distance between points states that d(x, y) = d(y, x)?", o: ["Positivity property", "Triangle inequality", "Symmetric property", "Scalar property"], a: 2, e: "In the study of distance between points in R<sup>n</sup>, the property where the distance from x to y is the same as y to x is explicitly called the symmetric property." },
+    { q: "Two nonzero vectors u and v are considered orthogonal if and only if:", o: ["Their sum is zero", "Their dot product u · v = 0", "Their lengths are equal", "The angle between them is 180°"], a: 1, e: "By definition, vectors are orthogonal if the angle between them is a right angle (90°), which occurs when the cosine of the angle is 0, resulting in a dot product of zero." },
+    { q: "Which of the following is NOT a requirement for identifying a linear equation?", o: ["The exponent of each variable is 1", "Variables are added or subtracted", "There are no radicals in the equation", "Variables can be multiplied together"], a: 3, e: "If variables are multiplied (e.g., xy), the equation becomes non-linear. Linear equations graph as a straight line and must have variables with an exponent of 1." },
+    { q: "In coordinate transformations, \"Translation\" is defined as:", o: ["Turning an object about a fixed point", "Sliding an object a fixed distance in a given direction", "Altering the size of an object", "Changing the shape of an object through deformation"], a: 1, e: "Translation is a rigid-body transformation that moves objects by adding offsets to coordinates without changing their shape or size." },
+    { q: "What is the standard equation of a line used in analytical geometry?", o: ["x² + y² = r²", "y = ax² + bx + c", "y = mx + c", "(x-h)² / a - (y-k)² / b = 1"], a: 2, e: "The module identifies y = mx + c as the equation of a line, where m is the slope and c is the y-intercept." },
+    { q: "In a 2D scaling transformation, if you want to alter the size of an object, you multiply the coordinates by:", o: ["Rotation matrices", "Translation vectors", "Scaling factors s<sub>x</sub> and s<sub>y</sub>", "Determinants"], a: 2, e: "Two-dimensional scaling involves multiplying the x and y coordinates by specific factors to increase or decrease the size of an object." },
+    { q: "Which rule is used to solve a system of linear equations by using the determinants of the coefficient matrix?", o: ["Taylor's Rule", "Cramer's Rule", "Gauss Elimination", "Maclaurin's Rule"], a: 1, e: "Cramer's Rule provides a solution for x and y variables in a system by expressing the numerator and denominator as determinants." },
 
-    // --- 25 ESSAYS ---
-    { q: "Explain the difference between Accuracy and Precision.", type: "essay", e: "Precision means all your measurements are very close to each other (consistent). Accuracy means your measurements are very close to the true value (correct). You can be precise but not accurate if you have a systematic error." },
-    { q: "What is a Geoid and why is it important for surveyors?", type: "essay", e: "The Geoid is the shape of the Earth based on gravity. It is like the level of the ocean if it covered the whole world. It is important because we use it to measure heights above sea level (Orthometric height)." },
-    { q: "Describe the purpose of a Map Projection.", type: "essay", e: "The Earth is round like a ball, but a map is flat. A map projection is a way to put the round Earth onto a flat paper. This always causes some changes (distortions) in size, shape, or distance." },
-    { q: "Why do we use the Least Squares method in surveying?", type: "essay", e: "We often have more measurements than we need (redundancy). The Least Squares method helps us find the best single answer by making the total error as small as possible." },
-    { q: "What is the main difference between WGS84 and a local datum?", type: "essay", e: "WGS84 is a global system for the whole world and uses the center of the Earth as its start point. A local datum is made to fit only one specific area or country very well." },
-    { q: "Explain how GNSS RTK works in simple terms.", type: "essay", e: "RTK uses two receivers. One is at a known 'Base' and one is moving (Rover). The Base sends corrections to the Rover using a radio. This helps the Rover get cm-level accuracy very fast." },
-    { q: "What is 'Heave' and how does it affect bathymetry?", type: "essay", e: "Heave is the up and down movement of a ship because of waves. If we don't fix it, the sea floor will look wavy in our data. We use a motion sensor to remove this movement." },
-    { q: "What are the three segments of GPS?", type: "essay", e: "1. Space Segment (the satellites), 2. Control Segment (ground stations), and 3. User Segment (our receivers like phones or survey tools)." },
-    { q: "What is a 'Rhumb Line'?", type: "essay", e: "A Rhumb Line is a path that has a constant compass direction. It is easy for sailors to follow, but it is not the shortest path between two points." },
-    { q: "Explain the term 'Ellipsoidal Height'.", type: "essay", e: "It is the height measured from a mathematical ellipsoid surface. GNSS gives us this height (h). It is different from the height above sea level (H)." },
-    { q: "What is 'Multipath' error in GPS?", type: "essay", e: "It happens when the GPS signal hits a building or a ship's crane before it reaches the antenna. This makes the signal arrive late and causes a position error." },
-    { q: "Why is 'Sound Velocity' important in hydrographic surveys?", type: "essay", e: "Echo sounders measure time to calculate depth. If we don't know the correct speed of sound in water, the depth calculation will be wrong." },
-    { q: "Describe 'Differential Levelling'.", type: "essay", e: "It is a way to find the height difference between two points. We use a level instrument and a graduated staff. We subtract the foresight from the backsight." },
-    { q: "What is the 'Jacobian Matrix' used for?", type: "essay", e: "It is a matrix of partial derivatives. We use it to linearize non-linear observation equations and for the propagation of uncertainties in Least Squares." },
-    { q: "What is the UTM coordinate system?", type: "essay", e: "UTM is a global grid system that divides the Earth into 60 zones. It uses a Transverse Mercator projection to provide high accuracy for mapping in each zone." },
-    { q: "Explain the role of an IMU in INS.", type: "essay", e: "An IMU (Inertial Measurement Unit) uses accelerometers and gyroscopes to measure movement and rotation. It allows the system to calculate position using dead reckoning." },
-    { q: "What is 'Spherical Excess'?", type: "essay", e: "It is the amount by which the sum of the angles of a spherical triangle exceeds 180 degrees. This is caused by the Earth's curvature." },
-    { q: "What is a 'Blunder' in surveying?", type: "essay", e: "A blunder is a gross error caused by human mistake, like misreading a staff or typing the wrong number. It must be removed before processing." },
-    { q: "How does the Normal Distribution relate to survey errors?", type: "essay", e: "It assumes that small random errors happen more often than large ones, and positive/negative errors are equally likely, forming a bell curve." },
-    { q: "What is a 'Reference Ellipsoid'?", type: "essay", e: "It is a mathematical model of the Earth's shape (an oblate spheroid) used as a smooth surface for calculating geographic coordinates (Lat, Lon)." },
-    { q: "Why is Tide Correction necessary?", type: "essay", e: "Because the water level changes with the tide. To make a consistent map, we must reduce all soundings to a fixed level called Chart Datum." },
-    { q: "Define sensor 'Calibration'.", type: "essay", e: "Calibration is the process of checking and adjusting an instrument against a standard to ensure its measurements are accurate and free of systematic bias." },
-    { q: "What is the 'Semi-major axis' (a)?", type: "essay", e: "The semi-major axis is the longest radius of the reference ellipsoid, representing the distance from the Earth's center to the Equator." },
-    { q: "What is 'Interpolation'?", type: "essay", e: "Interpolation is a mathematical method to estimate unknown values at specific locations based on the known values of surrounding data points." },
-    { q: "What is 'DOP' and how does it affect GNSS?", type: "essay", e: "DOP (Dilution of Precision) describes the geometry of the satellites. Low DOP means satellites are well-spread, resulting in better positioning accuracy." }
+    // Section 2: Differential Calculus
+    { q: "A Vector-Valued Function is defined as a function whose:", o: ["Domain is vectors and range is real numbers", "Domain is real numbers and range is a set of vectors", "Domain and range are both real numbers", "Domain and range are both matrices"], a: 1, e: "A vector function assigns a unique vector r(t) to every number t in its domain." },
+    { q: "To calculate the gradient of a vector-valued function r(t) = ⟨f(t), g(t), h(t)⟩, one must:", o: ["Find the integral of each component", "Find the derivative of each component function", "Multiply the components together", "Take the square root of the sum of components"], a: 1, e: "The rule for gradients in vector functions states that r'(t) = ⟨f'(t), g'(t), h'(t)⟩." },
+    { q: "Which series is used to represent a function as a sum of power series centered at 0?", o: ["Taylor series", "Maclaurin series", "Fourier series", "Fibonacci series"], a: 1, e: "The Maclaurin series is specifically noted as a series where the center is 0." },
+    { q: "Why are functions represented as series in Geodesy?", o: ["To make them harder to solve", "For integration, limits, and summing complex series", "Only to calculate rotations", "To eliminate the need for matrices"], a: 1, e: "The source lists integration, limits, and finding the sum of a series as the primary \"Why\" for using functions as series." },
+
+    // Section 3: Trigonometry
+    { q: "In plane trigonometry, the Tangent function is defined as the ratio of:", o: ["Adjacent leg to Hypotenuse", "Opposite leg to Hypotenuse", "Opposite leg to Adjacent leg", "Hypotenuse to Opposite leg"], a: 2, e: "Trigonometry defines basic functions based on right-triangle ratios; Tangent is Opposite/Adjacent." },
+    { q: "What is the term for a curve on the surface of a sphere that crosses every meridian at the same angle?", o: ["Great Circle", "Rhumb Line (Loxodrome)", "Orthodrome", "Geoid"], a: 1, e: "While a Great Circle is the shortest distance, a Rhumb Line maintains a constant direction (azimuth) relative to meridians." },
+    { q: "On the surface of a sphere, the interior angles of a triangle sum to:", o: ["Exactly 180°", "Over 180° and less than 540°", "Exactly 360°", "Over 540°"], a: 1, e: "This phenomenon is known as spherical excess, distinguishing spherical triangles from plane triangles." },
+
+    // Section 4: Statistics & Theory of Errors
+    { q: "Which type of phenomenon is one where a mathematical model allows \"perfect\" prediction of the outcome?", o: ["Random phenomenon", "Haphazard phenomenon", "Deterministic phenomenon", "Non-deterministic phenomenon"], a: 2, e: "Deterministic phenomena (common in exact sciences) allow for perfect prediction through mathematical models." },
+    { q: "In statistics, \"Standard Deviation\" is a measure of:", o: ["The average value", "Dispersion of observations within a dataset relative to their mean", "The middle value in a set", "The total number of observations"], a: 1, e: "Standard deviation (σ) quantifies how much the data varies or disperses from the arithmetic mean." },
+    { q: "According to the Normal Distribution curve, approximately what percentage of values fall within 2 standard deviations (μ ± 2σ)?", o: ["68%", "95%", "99.7%", "50%"], a: 1, e: "The source states that the area between μ-2σ and μ+2σ is about 95% (specifically 95.44%)." },
+    { q: "What is the primary purpose of performing \"extra\" (redundant) measurements in surveying?", o: ["To waste time", "To detect outliers (gross errors) and provide consolidated results", "To make the equipment work harder", "To increase the cost of the survey"], a: 1, e: "Redundancy is good practice to provide effective control, detect gross errors, and judge quality (Precision + Reliability)." },
+    { q: "Which law describes what happens to measurement errors when uncertain measurements are used to calculate a new quantity?", o: ["Newton's Law", "Law of Large Numbers", "Covariance Propagation Law", "Law of Sines"], a: 2, e: "Also known as error propagation, this law tracks how uncertainties in input estimates affect the combined standard uncertainty of the output." },
+    { q: "In the measurement model, the quantity subject to measurement is called the:", o: ["Estimate", "Measurand", "Parameter", "Variable"], a: 1, e: "The measurand is formally defined as the specific quantity intended to be measured." },
+
+    // Section 5: Least Squares & Interpolation
+    { q: "The method of Least Squares minimizes the sum of the squares of the:", o: ["Horizontal distances", "Vertical deviations (errors) ε", "Input quantities", "Rotation angles"], a: 1, e: "Least Square Estimation works by minimizing the sum of the squares of the deviations of observations from the regression line." },
+    { q: "Which interpolation method uses a \"flexible strip\" concept to draw smooth curves through points?", o: ["Lagrange Interpolation", "Spline Interpolation", "Bilinear Interpolation", "IDW"], a: 1, e: "Splines are described as using flexible strips to draw smooth curves, which can be linear, quadratic, or cubic." },
+    { q: "In Inverse Distance Weighting (IDW), what happens to the influence of a measured point as it gets farther from the prediction location?", o: ["It increases", "It remains the same", "It decreases", "It becomes infinite"], a: 2, e: "IDW assumes that things close to each other are more alike. As distance increases, the relationship and weight of the point decrease." },
+    { q: "A larger power factor (q) in IDW interpolation typically yields:", o: ["A rougher surface", "A smoother surface", "No change in the surface", "A flat plane"], a: 1, e: "The module notes that larger values of q (the power to which distance is raised) yield smoother surfaces." },
+
+    // Section 6: Geodesy & Coordinate Systems
+    { q: "What is the fundamental difference between a Reference System and a Reference Frame?", o: ["The System is the physical realization, the Frame is the theory", "The System is the theoretical concept, the Frame is the physical realization", "They are exactly the same", "The System is only for height, the Frame is for 2D"], a: 1, e: "A Reference System is an idealization/theory, while a Reference Frame is the practical realization (like a set of benchmarks)." },
+    { q: "Which coordinate system has its origin at the Earth's center of mass?", o: ["Topocentric", "Geocentric", "Heliocentric", "Barycentric"], a: 1, e: "Geocentric systems are centered at the geocenter (Earth's center), whereas topocentric systems are centered on the Earth's surface." },
+    { q: "The movement of the Earth's rotation axis relative to the Earth's crust is called:", o: ["Precession", "Nutation", "Polar Motion", "Tectonic Drift"], a: 2, e: "Polar motion is specifically defined as the movement of the rotation axis relative to the crust, unlike precession/nutation which are movements in space." },
+    { q: "Which mathematical model is a \"simpler mathematical model than Geoid,\" described as a rotating ellipse?", o: ["Physical Earth Model", "Geoid", "Reference Ellipsoid", "Topographic Surface"], a: 2, e: "The ellipsoid is a mathematical approximation used to simplify geodetic calculations." },
+    { q: "The vertical distance from the Geoid to the Earth's surface along the plumb line is called:", o: ["Ellipsoidal Height (h)", "Orthometric Height (H)", "Geoid Undulation (N)", "Dynamic Height"], a: 1, e: "Orthometric height is the natural \"height above sea level\" measured along the plumb line from the geoid." },
+    { q: "The relationship between Ellipsoidal height (h), Orthometric height (H), and Geoid undulation (N) is:", o: ["H = h + N", "H = h - N", "h = H - N", "N = H + h"], a: 1, e: "To find the orthometric height (height relative to geoid), you subtract the geoid undulation from the ellipsoidal height obtained from GNSS." },
+    { q: "What type of geodetic datum is used in Indonesia to account for its active tectonic characteristics?", o: ["Static Datum", "Semi-Dynamic Datum", "Absolute Datum", "Flat Datum"], a: 1, e: "Because Indonesia is tectonically active, geocentric coordinates change over time, making a Static Datum unsuitable. SRGI 2013 is a Semi-Dynamic Datum." },
+    { q: "Which organization legalized SRGI 2013 on 11 October 2013?", o: ["IERS", "BIG (Badan Informasi Geospasial)", "IHO", "NASA"], a: 1, e: "SRGI 2013 (Indonesian Geospatial Reference System) was legalized by BIG." },
+    { q: "The \"CIS\" (Conventional Inertial System) is primarily used to:", o: ["Describe the movement of points on the Earth's surface", "Describe the position and motion of satellites", "Measure the depth of the ocean", "Calibrate a Total Station"], a: 1, e: "CIS is a space-fixed system used in satellite geodesy, while CTS is earth-fixed." },
+
+    // Section 7: Map Projections
+    { q: "A map projection that preserves angles and shapes of small areas correctly is known as:", o: ["Equal-area", "Conformal", "Equidistant", "Azimuthal"], a: 1, e: "Conformal projections (like Mercator) show angles and small shapes correctly, though they distort area." },
+    { q: "The Mercator projection is a type of:", o: ["Conic projection", "Azimuthal projection", "Cylindrical projection", "Pseudo-conic projection"], a: 2, e: "Mercator is defined as a normal cylindrical map projection." },
+    { q: "Universal Transverse Mercator (UTM) divides the world into 60 longitudinal zones, each spanning:", o: ["3 degrees", "6 degrees", "10 degrees", "15 degrees"], a: 1, e: "UTM is organized into 60 narrow zones of 6 degrees longitude to minimize distortions." },
+    { q: "What is the scale factor given to the central meridian of a UTM zone?", o: ["1.0000", "0.9996", "0.5000", "0.9999"], a: 1, e: "A scale factor of 0.99960 is applied to the central meridian to keep distortions small within the zone." },
+    { q: "To avoid negative coordinates in UTM, the central meridian is assigned a \"False Easting\" of:", o: ["0 m", "100,000 m", "500,000 m", "10,000,000 m"], a: 2, e: "The value of 500,000m E is given to the central meridian to ensure all Easting coordinates remain positive." },
+    { q: "Which projection shows the shortest distance between two points (Great Circle) as a straight line?", o: ["Mercator", "Gnomonic", "Transverse Mercator", "Lambert Conformal Conic"], a: 1, e: "In a Gnomonic azimuthal projection (listed in use), great circles are straight lines, whereas in Mercator, Rhumb lines are straight." },
+
+    // Section 8: Technical Surveys & GNSS
+    { q: "In Levelling, the \"Back Sight\" is the:", o: ["First reading taken at a point of known elevation", "Last reading taken before moving the instrument", "Reading taken in the middle of a loop", "Reading taken with the telescope upside down"], a: 0, e: "Basic levelling involves taking a Back Sight (BS) on a known point and a Fore Sight (FS) on an unknown point to determine height difference." },
+    { q: "Which type of level instrument uses barcode staffs and stores readings digitally?", o: ["Dumpy Level", "Automated Level", "Digital Level", "Tilting Level"], a: 2, e: "Digital levels utilize barcode staffs, minimize human error, and allow for automated data storage." },
+    { q: "The \"Leap Frog Procedure\" in levelling refers to:", o: ["Jumping over obstacles", "Moving the staff from a back position to a forward position sequentially", "Rotating the level 360 degrees", "Using two levels at the same time"], a: 1, e: "Leap frog is a standard procedure shown in the diagrams for moving staff and instrument along a line." },
+    { q: "GNSS stands for:", o: ["Global Navigation Satellite System", "Geodetic Network Satellite System", "General Navigation Space System", "Global Network Survey System"], a: 0, e: "GNSS is the umbrella term for satellite constellations like GPS, Glonass, Galileo, and BeiDou." },
+    { q: "Which GNSS positioning method requires two receivers and generally uses the \"double difference\" equation?", o: ["Absolute Positioning", "Single Point Positioning", "Relative Positioning", "Precise Point Positioning (PPP)"], a: 2, e: "Relative positioning requires at least two receivers (base and rover) to produce high-accuracy results." },
+    { q: "Which GNSS error is caused by signals reflecting off objects like buildings or the ground before reaching the antenna?", o: ["Ionospheric Bias", "Multipath", "Clock Error", "Satellite Orbit Error"], a: 1, e: "Multipath occurs when the direct signal is combined with reflected signals, causing positional errors." },
+    { q: "In RINEX data, what information does the \"approximate position XYZ\" provide?", o: ["The current speed of the satellite", "The estimated 3D Cartesian coordinates of the station", "The antenna height", "The battery level of the receiver"], a: 1, e: "RINEX files must contain approximate XYZ coordinates for post-processing software to work correctly." },
+    { q: "An Inertial Measurement Unit (IMU) typically uses a combination of which sensors?", o: ["Compass and Ruler", "Accelerometer, Gyroscope, and Magnetometer", "Thermometer and Barometer", "GPS and Total Station"], a: 1, e: "An IMU measures angular rates and magnetic fields using accelerometers, gyroscopes, and sometimes magnetometers." },
+    { q: "In a boat's attitude, \"Pitch\" refers to rotation on which axis?", o: ["X axis (Roll)", "Y axis", "Z axis (Yaw)", "Up axis (Heave)"], a: 1, e: "The module defines Pitch as rotation on the Y axis, Roll as X, and Yaw as Z." },
+    { q: "What is the standard confidence level used for measuring accuracy in the survey industry?", o: ["50%", "68%", "95%", "100%"], a: 2, e: "Accuracy standards (including IHO S-44) typically describe uncertainty at a 95% confidence level, corresponding to a z value of approximately 1.96." },
+
+    // --- 25 ESSAYS (REPLACED) ---
+    { q: "What is \"Translation\" in coordinate transformations, and how does it work in 2D?", type: "essay", e: "Translation is a type of rigid-body transformation that moves objects without changing their shape or size. In a two-dimensional space, we move an object by sliding it a certain distance in a specific direction. This is done by adding offsets, called t<sub>x</sub> and t<sub>y</sub>, to the original x and y coordinates to find the new positions. For example, if you move a point 6 units to the right, you are performing a translation." },
+    { q: "Why do we use power series like the Taylor and Maclaurin series in Geodesy?", type: "essay", e: "We use power series to represent complex functions as a sum of simpler terms. This is very helpful for mathematical tasks like integration, finding limits, and summing complex series. In geodesy, many observation equations are non-linear, so we use the Taylor series to linearize them. The Maclaurin series is a specific type of Taylor series where the center point is zero." },
+    { q: "Explain the difference between Plane Trigonometry and Spherical Trigonometry.", type: "essay", e: "Plane trigonometry studies the relationships between the sides and angles of triangles on a flat surface. In a plane triangle, the three interior angles always add up to exactly 180°. Spherical trigonometry is used for triangles on the surface of a sphere, like the Earth. On a sphere, the interior angles of a triangle are always more than 180° but less than 540°. This extra amount over 180° is called \"spherical excess\"." },
+    { q: "What is a \"Random Variable\" in statistics, and what are the two main types?", type: "essay", e: "A random variable is a symbol that represents numerical values linked to the outcomes of a random experiment. It is basically a function that connects elements in a sample space to real numbers. There are two main types: Discrete and Continuous. Discrete variables involve countable things like the number of sales or people in a line. Continuous variables involve measurements on a scale, such as length, depth, or time." },
+    { q: "How do we define Standard Deviation, and why is it important?", type: "essay", e: "Standard deviation, denoted by the symbol σ, is a measure of how data points are spread out or dispersed relative to their average value (the mean). It tells us if the observations in a dataset are close to the average or far away from it. In surveying, a smaller standard deviation means the measurements are more consistent or precise." },
+    { q: "Why is it a good practice to perform \"extra\" or redundant measurements in surveying?", type: "essay", e: "Redundancy is captured in the phrase \"one measure is not a measure,\" meaning we should always take more measurements than the minimum required. These extra measurements help us provide effective control over the results. They allow us to detect \"gross errors\" or outliers that would otherwise ruin the survey. Redundancy also helps us consolidate results to find the best estimate and judge the overall quality, which includes precision and reliability." },
+    { q: "Describe the \"Covariance Propagation Law\" in simple terms.", type: "essay", e: "This law explains what happens to measurement errors when you use those uncertain measurements to calculate a new value. For example, if you use a measured distance and angle to calculate a position, the errors in the distance and angle will \"propagate\" or move into the calculated position. Errors usually grow much faster than the sum of the individual mistakes. This law helps us estimate the total uncertainty of our final calculated results." },
+    { q: "What is the basic goal of the \"Least Squares\" method?", type: "essay", e: "The goal of Least Squares is to find the best mathematical model that fits a set of measured data points. It estimates parameters by making the sum of the squares of the vertical errors (deviations from the line) as small as possible. We use this to find the \"closest\" solution to a system of equations where we have more observations than unknowns." },
+    { q: "Explain how Inverse Distance Weighting (IDW) interpolation works.", type: "essay", e: "IDW is a method used to predict values at locations where we didn't take measurements. It is based on the idea that things close to each other are more alike than things far apart. When predicting a value, measured points that are closer to the location get a higher \"weight\" or influence. As the distance increases, the influence of those measured points decreases." },
+    { q: "What is the effect of the \"power factor (q)\" in IDW interpolation?", type: "essay", e: "The power factor q controls how much the influence of a point drops as you get farther away. Larger values of q result in a smoother predicted surface. To get the best results, surveyors often test different values of q to see which one creates the smallest overall error (RMSE)." },
+    { q: "What is the difference between a Geodetic Reference System and a Reference Frame?", type: "essay", e: "A Reference System is a theoretical concept or an idealization of how coordinates should work. A Reference Frame is the physical realization of that system. This means a Frame is a set of actual physical points on the Earth's surface (benchmarks) with assigned coordinate values." },
+    { q: "Briefly explain the three main motions of the Earth that affect geodesy.", type: "essay", e: "The Earth is always moving, which complicates our coordinate systems. First, it rotates on its own axis, which is not perfectly constant. Second, the rotation axis itself moves in space due to \"Precession and Nutation\". Third, the axis moves relative to the Earth's crust, which is called \"Polar Motion\". These motions mean that coordinates for the same point can change over time." },
+    { q: "Why does Indonesia use a \"Semi-Dynamic\" geodetic datum?", type: "essay", e: "Indonesia is located in a very active tectonic area where plates are constantly moving. This movement causes geocentric coordinates to change over time. A \"Static Datum\" is not suitable because it assumes points don't move. A \"Semi-Dynamic Datum\" like SRGI 2013 is used because it represents coordinates at a specific time (epoch) and uses a velocity model to account for tectonic motion." },
+    { q: "What are the main characteristics of the WGS 84 coordinate system?", type: "essay", e: "WGS 84 is the earth-fixed Cartesian coordinate system used by GPS. Its origin point is at the Earth's center of mass. The Z-axis follows the Earth's rotation axis, the X-axis is on the Prime Meridian (Greenwich), and the Y-axis is perpendicular to both. It uses a specific reference ellipsoid with defined parameters for its size and flattening." },
+    { q: "Describe the Geoid and its relationship to the Ellipsoid and physical Earth.", type: "essay", e: "The physical Earth is irregular and too complex for math. The Geoid is a more useful physical model that connects points with the same gravity potential (sea level). However, the Geoid is still bumpy, so we use a \"Reference Ellipsoid\" as a simpler mathematical model for calculations. The distance between the Ellipsoid and the Geoid is called \"Geoid Undulation\" (N)." },
+    { q: "What is a \"Conformal\" map projection, and give an example.", type: "essay", e: "A conformal projection is one that preserves the correct angles and shapes of small areas. While it shows shapes correctly, it usually distorts the size or area of regions. The Mercator projection is a famous example of a conformal cylindrical projection. In a Mercator map, Greenland looks much larger than it actually is compared to South America." },
+    { q: "How is the Universal Transverse Mercator (UTM) system organized?", type: "essay", e: "UTM divides the Earth into 60 narrow longitudinal zones, and each zone is 6 degrees wide. This organization helps keep distortions very small within each zone. Each zone has its own central meridian with a scale factor of 0.9996. To avoid negative numbers, the central meridian is given a \"False Easting\" of 500,000 meters." },
+    { q: "Explain the difference between \"Back Sight\" and \"Fore Sight\" in levelling.", type: "essay", e: "In the basic principle of levelling, a \"Back Sight\" (BS) is the first reading taken on a point with a known elevation. A \"Fore Sight\" (FS) is the reading taken on a new point whose elevation we want to find. By comparing these two readings, we can calculate the height difference between the two points." },
+    { q: "What is \"Relative Positioning\" in GNSS, and why is it used?", type: "essay", e: "Relative positioning requires using at least two GNSS receivers at the same time. One receiver stays at a known point (base station), while the other moves (rover). This method is used because it can cancel out many common errors, like satellite clock or atmospheric delays. This allows surveyors to achieve very high accuracy, often down to the millimeter or centimeter level." },
+    { q: "What is a \"Cycle Slip\" in GNSS observations?", type: "essay", e: "A cycle slip is a jump or a break in the carrier phase signal from a satellite. This usually happens when the signal is blocked by an obstruction like a tree or a building. If a cycle slip occurs, the receiver loses its count of the signal waves, which can cause large errors in positioning. Surveyors use techniques like linear regression or Kalman filters to try and fix these slips." },
+    { q: "Define \"Orthometric Height\" (H) and how it is obtained.", type: "essay", e: "Orthometric height is the natural \"height above sea level\". It is the vertical distance measured along a plumb line from the Geoid to a point on the Earth's surface. To find it using GNSS, you take the \"Ellipsoidal Height\" (h) from the satellite and subtract the \"Geoid Undulation\" (N) value for that location." },
+    { q: "What is an Inertial Measurement Unit (IMU), and what sensors does it contain?", type: "essay", e: "An IMU is an electronic device used to measure the motion, rotation, and orientation of a body, such as a survey boat. It typically uses a combination of three types of sensors: accelerometers (to measure movement), gyroscopes (to measure rotation rates), and magnetometers (to measure magnetic fields)." },
+    { q: "Explain the difference between \"Accuracy\" and \"Precision\" using a target analogy.", type: "essay", e: "Accuracy is how close your measurements are to the true or \"bullseye\" value. Precision is how close your measurements are to each other, showing consistency. You can have \"High Precision\" (all shots are in a tight group) but \"Low Accuracy\" (the group is far away from the center). Ideally, a survey should have both high accuracy and high precision." },
+    { q: "What are the three main categories of errors in levelling?", type: "essay", e: "Levelling errors are usually divided into three categories: Instrumental, Personal, and Natural. Instrumental errors come from the tool, like a sticking compensator. Personal errors come from the human operator, like reading the staff incorrectly or setting up the tripod poorly. Natural errors come from the environment, like wind, temperature changes, or the curvature of the Earth." },
+    { q: "What is the standard confidence level for accuracy in the survey industry, and why?", type: "essay", e: "The industry standard for measuring accuracy is the 95% confidence level. This means that if you take a measurement, you are 95% sure the true value falls within the stated uncertainty range. International standards like IHO S-44 use this 95% level to define how reliable a hydrographic survey must be." }
 ];
 
 let currentUser = "";
@@ -506,7 +509,7 @@ function handleModuleClick() {
 
 function startExam() {
     userAns = {};
-    loadDraft(); // Load any existing draft
+    loadDraft();
     document.getElementById('menuScreen').classList.add('hidden');
     document.getElementById('examScreen').classList.remove('hidden');
     document.getElementById('displayUser').innerText = `Candidate: ${currentUser}`;
@@ -627,7 +630,7 @@ function autoSaveDraft() {
     clearTimeout(window.autosaveTimeout);
     window.autosaveTimeout = setTimeout(() => {
         saveDraft();
-    }, 2000); // Auto-save after 2 seconds of inactivity
+    }, 2000);
 }
 
 function showAutosaveIndicator() {
@@ -667,7 +670,6 @@ function submitExam() {
     const totalPossible = BANK.length;
     const finalScore = Math.round(((mcqScore + essayAttempted) / totalPossible) * 100);
     
-    // Clear draft after submission
     const draftKey = `krisna_pg01_draft_${currentUser}`;
     localStorage.removeItem(draftKey);
     
@@ -716,7 +718,7 @@ function renderReview() {
                     <p><strong>${i+1}. ${q.q}</strong> <span class="badge-mcq">MCQ</span></p>
                     ${opts}
                     <div class="explanation-box">
-                        <strong><i class="fas fa-lightbulb"></i> Explanation:</strong><br>
+                        <strong><i class="fas fa-lightbulb"></i> Discussion:</strong><br>
                         ${q.e}
                     </div>
                 </div>
@@ -726,7 +728,6 @@ function renderReview() {
 }
 
 function filterReview(type) {
-    // Update active button
     document.querySelectorAll('.filter-bar .filter-btn').forEach(btn => btn.classList.remove('active'));
     event.target.classList.add('active');
     
@@ -746,7 +747,6 @@ function filterReview(type) {
 
 function showMasterKey() {
     userAns = {};
-    // Fill all correct answers for MCQ
     BANK.forEach((q, i) => {
         if(q.type !== 'essay') {
             userAns[i] = q.a;
@@ -809,7 +809,6 @@ function filterHistory() {
 }
 
 function sortHistory(type) {
-    // Update active button
     document.querySelectorAll('.filter-bar .filter-btn').forEach(btn => btn.classList.remove('active'));
     event.target.classList.add('active');
     
@@ -916,7 +915,6 @@ function toggleDarkMode() {
     }
 }
 
-// Load dark mode preference
 window.addEventListener('DOMContentLoaded', () => {
     if(localStorage.getItem('darkMode') === 'enabled') {
         document.body.classList.add('dark-mode');
